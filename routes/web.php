@@ -74,6 +74,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	Route::group(['prefix' => 'course_management'], function () {
 		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('module.index');
 		Route::get('course', 'App\Http\Controllers\CourseController@index')->name('course.index');
+		Route::get('create', 'App\Http\Controllers\CourseController@create')->name('course.create');
+		Route::get('edit/{parent_id}/{id}', 'App\Http\Controllers\CourseController@edit')->name('course.edit');
 	});
 
 });

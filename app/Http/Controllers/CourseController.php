@@ -12,8 +12,8 @@ class CourseController extends Controller
     {
         parent::__construct($parameters);
         
-        $this->_module      = 'Course Management';
-        $this->_routePrefix = 'course_management';
+        $this->_module      = 'Course';
+        $this->_routePrefix = 'course';
         $this->_model       = new Course();
     }
 
@@ -24,10 +24,9 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        echo "++++";
-        die;
+       
         $this->initIndex();
-        $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'LocationStateController');
+        $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'CourseController');
         $srch_params                        = $request->all();
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;

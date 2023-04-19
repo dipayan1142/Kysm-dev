@@ -9,29 +9,38 @@ class Course extends Model
 {
     use SoftDeletes;
 
-    protected $table    = 'course';
+    protected $table    = 'courses';
     
     protected $fillable = [
         
-        'Course_name',
-        'Course_description',
-        'status'
+        'course_name',
+        'course_title',
+        'tag_line',
+        'short_description',
+        'duration',
+        'enroll',
+        'eligibility',
+        'availibity',
+        'about_course',
+        'key_features',
+        'status',
+        
     ];
 
     protected $hidden = [
     	'updated_at',
-    	'deleted_at'
+    	
     ];
 
     public $statuses = [
         0=> [
             'id' => 0,
-            'name' => 'Disabled',
+            'name' => 'Inactive',
             'badge' => 'warning'
         ],
         1=> [
             'id' => 1,
-            'name' => 'Enabled',
+            'name' => 'Active',
             'badge' => 'success'
         ],
     ];
@@ -76,8 +85,8 @@ class Course extends Model
             ->when(isset($srch_params['with']), function ($q) use ($srch_params) {
 				return $q->with($srch_params['with']);
 			})
-            ->when(isset($srch_params['country_name']), function($q) use($srch_params){
-                return $q->where($this->table . ".country_name", "LIKE", "%{$srch_params['country_name']}%");
+            ->when(isset($srch_params['course_name']), function($q) use($srch_params){
+                return $q->where($this->table . ".course_name", "LIKE", "%{$srch_params['course_name']}%");
             })
             ->when(isset($srch_params['code']), function($q) use($srch_params){
                 return $q->where($this->table . ".country_code", "LIKE", "%{$srch_params['code']}%");
@@ -103,7 +112,7 @@ class Course extends Model
                 $listing->orderBy($key, $value);
             }
         } else {
-            $listing->orderBy($this->table . '.country_name', 'ASC');
+            $listing->orderBy($this->table . '.created_at', 'DESC');
         }
 
         if (isset($srch_params['get_sql']) && $srch_params['get_sql']) {
