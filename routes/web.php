@@ -71,6 +71,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('icons', 'App\Http\Controllers\SiteSettingController@uiIcons')->name('ui.icons');
 	});
 
+	Route::group(['prefix' => 'course_management'], function () {
+		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('module.index');
+		Route::get('course', 'App\Http\Controllers\CourseController@index')->name('course.index');
+	});
+
 });
 
 Auth::routes(['verify' => true]);
