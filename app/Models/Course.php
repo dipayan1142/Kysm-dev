@@ -53,17 +53,17 @@ class Course extends Model
 		return [
             'reset' => route('location.countries.index'),
 			'fields' => [
-				'country_name'          => [
+				'course_name'          => [
 		            'type'      => 'text',
-		            'label'     => 'Name'
+		            'label'     => 'Course Name'
 		        ],
-		        'code'         => [
+		        'course_title'         => [
 		            'type'      => 'text',
-		            'label'     => 'Country code'
+		            'label'     => 'Course Title'
 		        ],
-		        'phone_code'        => [
+		        'tag_line'        => [
 		            'type'      => 'text',
-		            'label'     => 'Phone code'
+		            'label'     => 'Tag Line'
 		        ],
 		        'status'     => [
                     'type'       => 'select',
@@ -88,8 +88,8 @@ class Course extends Model
             ->when(isset($srch_params['course_name']), function($q) use($srch_params){
                 return $q->where($this->table . ".course_name", "LIKE", "%{$srch_params['course_name']}%");
             })
-            ->when(isset($srch_params['code']), function($q) use($srch_params){
-                return $q->where($this->table . ".country_code", "LIKE", "%{$srch_params['code']}%");
+            ->when(isset($srch_params['course_title']), function($q) use($srch_params){
+                return $q->where($this->table . ".course_title", "LIKE", "%{$srch_params['course_title']}%");
             })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);
@@ -100,8 +100,8 @@ class Course extends Model
                             ->first();
         }
 
-        if(isset($srch_params['country_code'])){
-            return $listing->where($this->table . '.country_code', '=', $srch_params['country_code'])
+        if(isset($srch_params['tag_line'])){
+            return $listing->where($this->table . '.tag_line', '=', $srch_params['tag_line'])
                             ->first();
         }
 

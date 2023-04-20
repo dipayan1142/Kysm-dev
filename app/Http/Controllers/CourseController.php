@@ -130,27 +130,92 @@ class CourseController extends Controller
         $form = [
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
+            
             'fields'     => [
-                'country_code'      => [
+                // 'module'      => [
+                //     'type'          => 'select',
+                //     'label'         => 'Select Module',
+                //     'attributes'    => [
+                //         'max'       => 5,
+                //         'required'  => true
+                //     ]
+                // ],
+                'course_name'      => [
                     'type'          => 'text',
-                    'label'         => 'Country code',
+                    'label'         => 'Course Name',
                     'attributes'    => [
                         'max'       => 5,
                         'required'  => true
                     ]
                 ],
-                'country_name'      => [
+                'course_title'      => [
                     'type'          => 'text',
-                    'label'         => 'Country name',
+                    'label'         => 'Course Title',
                     'attributes'    => [
                         'required'  => true
                     ]
                 ],
-                'phone_code'        => [
+                'tag_line'        => [
                     'type'          => 'text',
-                    'label'         => 'Phone code',
+                    'label'         => 'Tag Line',
                     'attributes'    => [
-                        'max'       => 5,
+                        
+                        'required'  => true
+                    ]
+                ],
+                'short_description'        => [
+                    'type'          => 'text',
+                    'label'         => 'Short Description',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'duration'        => [
+                    'type'          => 'text',
+                    'label'         => 'Duration',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'enroll'        => [
+                    'type'          => 'text',
+                    'label'         => 'Enroll',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'eligibility'        => [
+                    'type'          => 'text',
+                    'label'         => 'Eligibility',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'availibity'        => [
+                    'type'          => 'text',
+                    'label'         => 'Availibity',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'about_course'        => [
+                    'type'          => 'textarea',
+                    'label'         => 'About Course',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'key_features'        => [
+                    'type'          => 'textarea',
+                    'label'         => 'Features',
+                    'attributes'    => [
+                        
                         'required'  => true
                     ]
                 ],
@@ -176,9 +241,9 @@ class CourseController extends Controller
     protected function __formPost(Request $request, $id = '')
     {
         $validationRules = [
-            'country_code'          => 'required|max:5',
-            'country_name'          => 'required|max:255',
-            'phone_code'            => 'required|max:255'
+            'course_name'          => 'required',
+            'course_title'          => 'required',
+            'duration'            => 'required|max:255'
         ];
 
         $this->validate($request, $validationRules);

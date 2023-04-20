@@ -15,7 +15,7 @@
   <table class="table table-condensed mh-200">
     <thead>
       <tr>
-        <th >Name </th>
+        <th>Name </th>
         <th>Title</th>
         <th>Tag Line</th>
         <th>Short Desc</th>
@@ -58,9 +58,9 @@
         @if($permission['edit'] || $permission['destroy'])
         <td class="text-right">
           @if($permission['edit'])
-          
+          <a href="{{ route($routePrefix . '.edit', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="Edit">{!! \Config::get('settings.icon_edit') !!}</a>
           @endif
-          @if($permission['destroy'] && $val->id != auth()->user()->id)
+          @if($permission['destroy'] )
             <a class="btn btn-outline-danger waves-effect" data-toggle="tooltip" title="" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" data-confirm-yes="event.preventDefault();
                   document.getElementById('delete-form-{{$val->id}}').submit();" data-original-title="Delete">{!! \Config::get('settings.icon_delete') !!}</a>
             {!! Form::open([

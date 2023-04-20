@@ -64,7 +64,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('edit/{id}', 'App\Http\Controllers\SiteTemplateController@edit')->name('templates.edit');
 		Route::post('store', 'App\Http\Controllers\SiteTemplateController@store')->name('templates.store');
 		Route::patch('update/{id}', 'App\Http\Controllers\SiteTemplateController@update')->name('templates.update');
-		Route::delete('destroy/{id}', 'SApp\Http\Controllers\iteTemplateController@destroy')->name('templates.destroy');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\iteTemplateController@destroy')->name('templates.destroy');
 	});
 
 	Route::group(['prefix' => 'ui'], function () {
@@ -75,7 +75,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('module.index');
 		Route::get('course', 'App\Http\Controllers\CourseController@index')->name('course.index');
 		Route::get('create', 'App\Http\Controllers\CourseController@create')->name('course.create');
-		Route::get('edit/{parent_id}/{id}', 'App\Http\Controllers\CourseController@edit')->name('course.edit');
+		Route::get('edit/{id}', 'App\Http\Controllers\CourseController@edit')->name('course.edit');
+		Route::post('store', 'App\Http\Controllers\CourseController@store')->name('course.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\CourseController@update')->name('course.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\CourseController@destroy')->name('course.destroy');
 	});
 
 });
