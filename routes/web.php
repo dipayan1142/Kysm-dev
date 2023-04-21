@@ -72,7 +72,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	});
 
 	Route::group(['prefix' => 'course'], function () {
-		Route::get('course', 'App\Http\Controllers\CourseController@index')->name('course.index');
+		Route::get('index', 'App\Http\Controllers\CourseController@index')->name('course.index');
 		Route::get('create', 'App\Http\Controllers\CourseController@create')->name('course.create');
 		Route::get('edit/{id}', 'App\Http\Controllers\CourseController@edit')->name('course.edit');
 		Route::post('store', 'App\Http\Controllers\CourseController@store')->name('course.store');

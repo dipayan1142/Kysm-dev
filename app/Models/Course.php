@@ -12,7 +12,7 @@ class Course extends Model
     protected $table    = 'courses';
     
     protected $fillable = [
-        
+        'module_id',
         'course_name',
         'course_title',
         'tag_line',
@@ -50,9 +50,21 @@ class Course extends Model
     public function getFilters()
 	{
         $status         = \App\Helpers\Helper::makeSimpleArray($this->statuses, 'id,name');
+        $courseModule       = new CourseModule();
+        $courseM       = $courseModule->getListing(['status'=>'1'])
+            ->pluck('name', 'id')
+            ->all();
 		return [
-            'reset' => route('location.countries.index'),
+            'reset' => route('course.index'),
 			'fields' => [
+                'module_id'     => [
+                    'type'       => 'select',
+                    'label'      => 'Module',
+                    'attributes' => [
+                        'id' => 'module',
+                    ],
+                    'options'    => $courseM,
+                ],
 				'course_name'          => [
 		            'type'      => 'text',
 		            'label'     => 'Course Name'
@@ -61,10 +73,10 @@ class Course extends Model
 		            'type'      => 'text',
 		            'label'     => 'Course Title'
 		        ],
-		        'tag_line'        => [
-		            'type'      => 'text',
-		            'label'     => 'Tag Line'
-		        ],
+		        // 'tag_line'        => [
+		        //     'type'      => 'text',
+		        //     'label'     => 'Tag Line'
+		        // ],
 		        'status'     => [
                     'type'       => 'select',
                     'label'      => 'Status',
@@ -80,8 +92,9 @@ class Course extends Model
     public function getListing($srch_params = [], $offset = 0)
     {
         $listing = self::select(
-                $this->table . ".*"
-            )
+                $this->table . ".*",
+                'course_module.name'
+            )->leftJoin('course_module', 'course_module.id', '=', $this->table.'.module_id')
             ->when(isset($srch_params['with']), function ($q) use ($srch_params) {
 				return $q->with($srch_params['with']);
 			})
@@ -90,6 +103,9 @@ class Course extends Model
             })
             ->when(isset($srch_params['course_title']), function($q) use($srch_params){
                 return $q->where($this->table . ".course_title", "LIKE", "%{$srch_params['course_title']}%");
+            })
+            ->when(isset($srch_params['module_id']), function($q) use($srch_params){
+                return $q->where($this->table . ".module_id", "=",$srch_params['module_id']);
             })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);

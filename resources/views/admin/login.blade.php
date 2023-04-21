@@ -28,7 +28,7 @@
             @include('admin.components.messages')
             <div class="form-group">
                 <label for="email">User Name</label>
-                <input type="text" class="form-control" name="username" value="{{ old('username') }}" id="email" placeholder="Email" aria-required="true"{{ $errors->has('email') ? ' aria-invalid="true"' : '' }}>
+                <input type="text" class="form-control" name="username" value="{{ old('username') }}" id="email" placeholder="User Name" aria-required="true"{{ $errors->has('email') ? ' aria-invalid="true"' : '' }}>
                 @if ($errors->has('username'))
                     <label class="error" for="email">
                         <strong>{{ $errors->first('username') }}</strong>

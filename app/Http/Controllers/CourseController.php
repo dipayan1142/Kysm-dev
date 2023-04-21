@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
-
+use App\Models\CourseModule;
 class CourseController extends Controller
 {
     public function __construct($parameters = array())
@@ -124,26 +124,26 @@ class CourseController extends Controller
         if($response) {
             return $response;
         }
-        
-        $roles       = $roleModel->getListing([
-            'level_gte' => $userMinRole,
-            'orderBy'   => 'roles__level',
-        ])
-            ->pluck('title', 'id')
+        $courseModule       = new CourseModule();
+        $courseM       = $courseModule->getListing(['status'=>'1'])
+            ->pluck('name', 'id')
             ->all();
 
         extract($this->_data);
         $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
+        
         $form = [
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
             
             'fields'     => [
-                'module'      => [
+                'module_id'      => [
                     'type'          => 'select',
                     'label'         => 'Select Module',
+                    'options'       => $courseM,
+                    'value'         => isset($data->module_id) ? $data->module_id : 1,
                     'attributes'    => [
-                       
+                        
                         'required'  => true
                     ]
                 ],
@@ -151,7 +151,7 @@ class CourseController extends Controller
                     'type'          => 'text',
                     'label'         => 'Course Name',
                     'attributes'    => [
-                        'max'       => 5,
+                    
                         'required'  => true
                     ]
                 ],
