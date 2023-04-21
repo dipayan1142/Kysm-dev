@@ -71,8 +71,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('icons', 'App\Http\Controllers\SiteSettingController@uiIcons')->name('ui.icons');
 	});
 
-	Route::group(['prefix' => 'course_management'], function () {
-		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('module.index');
+	Route::group(['prefix' => 'course'], function () {
 		Route::get('course', 'App\Http\Controllers\CourseController@index')->name('course.index');
 		Route::get('create', 'App\Http\Controllers\CourseController@create')->name('course.create');
 		Route::get('edit/{id}', 'App\Http\Controllers\CourseController@edit')->name('course.edit');
@@ -80,6 +79,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::patch('update/{id}', 'App\Http\Controllers\CourseController@update')->name('course.update');
 		Route::delete('destroy/{id}', 'App\Http\Controllers\CourseController@destroy')->name('course.destroy');
 	});
+
+	Route::group(['prefix' => 'course_module'], function () {
+		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('course_module.index');
+		Route::get('create', 'App\Http\Controllers\CourseModuleController@create')->name('course_module.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\CourseModuleController@edit')->name('course_module.edit');
+		Route::post('store', 'App\Http\Controllers\CourseModuleController@store')->name('course_module.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\CourseModuleController@update')->name('course_module.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\CourseModuleController@destroy')->name('course_module.destroy');
+	
+	});
+
+
 
 });
 

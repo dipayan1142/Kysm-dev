@@ -13,8 +13,8 @@ class CourseModule extends Model
     
     protected $fillable = [
         
-        'module_name',
-        'module_description',
+        'name',
+        'description',
         'status'
     ];
 
@@ -42,20 +42,13 @@ class CourseModule extends Model
 	{
         $status         = \App\Helpers\Helper::makeSimpleArray($this->statuses, 'id,name');
 		return [
-            'reset' => route('location.countries.index'),
+            'reset' => route('course_management.index'),
 			'fields' => [
-				'country_name'          => [
+				'name'          => [
 		            'type'      => 'text',
-		            'label'     => 'Name'
+		            'label'     => 'Module Name'
 		        ],
-		        'code'         => [
-		            'type'      => 'text',
-		            'label'     => 'Country code'
-		        ],
-		        'phone_code'        => [
-		            'type'      => 'text',
-		            'label'     => 'Phone code'
-		        ],
+		       
 		        'status'     => [
                     'type'       => 'select',
                     'label'      => 'Status',
@@ -76,11 +69,8 @@ class CourseModule extends Model
             ->when(isset($srch_params['with']), function ($q) use ($srch_params) {
 				return $q->with($srch_params['with']);
 			})
-            ->when(isset($srch_params['country_name']), function($q) use($srch_params){
-                return $q->where($this->table . ".country_name", "LIKE", "%{$srch_params['country_name']}%");
-            })
-            ->when(isset($srch_params['code']), function($q) use($srch_params){
-                return $q->where($this->table . ".country_code", "LIKE", "%{$srch_params['code']}%");
+            ->when(isset($srch_params['name']), function($q) use($srch_params){
+                return $q->where($this->table . ".name", "LIKE", "%{$srch_params['name']}%");
             })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);
@@ -91,19 +81,13 @@ class CourseModule extends Model
                             ->first();
         }
 
-        if(isset($srch_params['country_code'])){
-            return $listing->where($this->table . '.country_code', '=', $srch_params['country_code'])
-                            ->first();
-        }
-
-   
         if(isset($srch_params['orderBy'])){
             $this->orderBy = \App\Helpers\Helper::manageOrderBy($srch_params['orderBy']);
             foreach ($this->orderBy as $key => $value) {
                 $listing->orderBy($key, $value);
             }
         } else {
-            $listing->orderBy($this->table . '.country_name', 'ASC');
+            $listing->orderBy($this->table . '.id', 'ASC');
         }
 
         if (isset($srch_params['get_sql']) && $srch_params['get_sql']) {
