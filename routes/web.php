@@ -71,13 +71,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('icons', 'App\Http\Controllers\SiteSettingController@uiIcons')->name('ui.icons');
 	});
 
-	Route::group(['prefix' => 'course_management'], function () {
-		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('course_management.index');
-		Route::get('create', 'App\Http\Controllers\CourseModuleController@create')->name('course_management.create');
-		Route::get('edit/{id}', 'App\Http\Controllers\CourseModuleController@edit')->name('course_management.edit');
-		Route::post('store', 'App\Http\Controllers\CourseModuleController@store')->name('course_management.store');
-		Route::patch('update/{id}', 'App\Http\Controllers\CourseModuleController@update')->name('course_management.update');
-		Route::delete('destroy/{id}', 'App\Http\Controllers\CourseModuleController@destroy')->name('course_management.destroy');
+	Route::group(['prefix' => 'course_module'], function () {
+		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('course_module.index');
+		Route::get('create', 'App\Http\Controllers\CourseModuleController@create')->name('course_module.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\CourseModuleController@edit')->name('course_module.edit');
+		Route::post('store', 'App\Http\Controllers\CourseModuleController@store')->name('course_module.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\CourseModuleController@update')->name('course_module.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\CourseModuleController@destroy')->name('course_module.destroy');
+	
+	});
+
+	Route::group(['prefix' => 'semester'], function () {
+		Route::get('index', 'App\Http\Controllers\SemesterController@index')->name('semester.index');
+		Route::get('show/{id}', 'App\Http\Controllers\SemesterController@show')->name('semester.show');
+		Route::get('create/{id}', 'App\Http\Controllers\SemesterController@create')->name('semester.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\SemesterController@edit')->name('semester.edit');
+		Route::post('store', 'App\Http\Controllers\SemesterController@store')->name('semester.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\SemesterController@update')->name('semester.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\SemesterController@destroy')->name('semester.destroy');
 	
 	});
 
