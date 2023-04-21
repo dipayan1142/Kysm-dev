@@ -72,9 +72,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	});
 
 	Route::group(['prefix' => 'course_management'], function () {
-		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('module.index');
-		Route::get('course', 'App\Http\Controllers\CourseController@index')->name('course.index');
+		Route::get('index', 'App\Http\Controllers\CourseModuleController@index')->name('course_management.index');
+		Route::get('create', 'App\Http\Controllers\CourseModuleController@create')->name('course_management.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\CourseModuleController@edit')->name('course_management.edit');
+		Route::post('store', 'App\Http\Controllers\CourseModuleController@store')->name('course_management.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\CourseModuleController@update')->name('course_management.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\CourseModuleController@destroy')->name('course_management.destroy');
+	
 	});
+
+
 
 });
 

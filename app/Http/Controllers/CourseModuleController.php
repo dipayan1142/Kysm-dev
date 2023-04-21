@@ -24,15 +24,17 @@ class CourseModuleController extends Controller
      */
     public function index(Request $request)
     {
-       
         $this->initIndex();
-        $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'LocationStateController');
+
         $srch_params                        = $request->all();
+        $this->_data['userId']     	=       \Auth::user()->id;
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;
         $this->_data['filters']             = $this->_model->getFilters();
-        return view('admin.' . $this->_routePrefix . '.index', $this->_data)
+        return view('admin.' . $this->_routePrefix . '.module_index', $this->_data)
             ->with('i', ($request->input('page', 1) - 1) * $this->_offset);
+        
+        // return view('admin.' . $this->_routePrefix . '.module_index');
     }
 
     /**
@@ -131,26 +133,17 @@ class CourseModuleController extends Controller
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
             'fields'     => [
-                'country_code'      => [
+                'name'      => [
                     'type'          => 'text',
-                    'label'         => 'Country code',
-                    'attributes'    => [
-                        'max'       => 5,
-                        'required'  => true
-                    ]
-                ],
-                'country_name'      => [
-                    'type'          => 'text',
-                    'label'         => 'Country name',
+                    'label'         => 'Module Name',
                     'attributes'    => [
                         'required'  => true
                     ]
                 ],
-                'phone_code'        => [
-                    'type'          => 'text',
-                    'label'         => 'Phone code',
+                'description'      => [
+                    'type'          => 'textarea',
+                    'label'         => 'Description',
                     'attributes'    => [
-                        'max'       => 5,
                         'required'  => true
                     ]
                 ],
@@ -176,9 +169,8 @@ class CourseModuleController extends Controller
     protected function __formPost(Request $request, $id = '')
     {
         $validationRules = [
-            'country_code'          => 'required|max:5',
-            'country_name'          => 'required|max:255',
-            'phone_code'            => 'required|max:255'
+            'name'          => 'required',
+            'description'          => 'required',
         ];
 
         $this->validate($request, $validationRules);
