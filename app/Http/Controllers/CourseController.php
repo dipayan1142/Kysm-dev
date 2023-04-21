@@ -124,6 +124,13 @@ class CourseController extends Controller
         if($response) {
             return $response;
         }
+        
+        $roles       = $roleModel->getListing([
+            'level_gte' => $userMinRole,
+            'orderBy'   => 'roles__level',
+        ])
+            ->pluck('title', 'id')
+            ->all();
 
         extract($this->_data);
         $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
@@ -132,14 +139,14 @@ class CourseController extends Controller
             'back_route' => route($this->_routePrefix . '.index'),
             
             'fields'     => [
-                // 'module'      => [
-                //     'type'          => 'select',
-                //     'label'         => 'Select Module',
-                //     'attributes'    => [
-                //         'max'       => 5,
-                //         'required'  => true
-                //     ]
-                // ],
+                'module'      => [
+                    'type'          => 'select',
+                    'label'         => 'Select Module',
+                    'attributes'    => [
+                       
+                        'required'  => true
+                    ]
+                ],
                 'course_name'      => [
                     'type'          => 'text',
                     'label'         => 'Course Name',
