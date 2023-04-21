@@ -4,26 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\CourseModule;
+use App\Models\Semester;
 
-class CourseModuleController extends Controller
+class SemesterController extends Controller
 {
     public function __construct($parameters = array())
     {
         parent::__construct($parameters);
         
-        $this->_module      = 'Course Module';
-        $this->_routePrefix = 'course_module';
-        $this->_model       = new CourseModule();
+        $this->_module      = 'semester';
+        $this->_routePrefix = 'semester';
+        $this->_model       = new Semester();
     }
+
+    
+
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request,$id= 0)
     {
+    
         $this->initIndex();
 
         $srch_params                        = $request->all();
@@ -31,20 +35,24 @@ class CourseModuleController extends Controller
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;
         $this->_data['filters']             = $this->_model->getFilters();
-        return view('admin.' . $this->_routePrefix . '.module_index', $this->_data)
+        // dd( $this->_data);
+        return view('admin.' . $this->_routePrefix . '.index', $this->_data)
             ->with('i', ($request->input('page', 1) - 1) * $this->_offset);
         
         // return view('admin.' . $this->_routePrefix . '.module_index');
     }
+
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(Request $request,$id)
     {
-        return $this->__formUiGeneration($request);
+        // echo "+++".$id;die;
+        return $this->__formUiGenerationCreate($request,$id);
     }
 
     /**
@@ -66,8 +74,17 @@ class CourseModuleController extends Controller
      */
     public function show($id)
     {
-        $data = $this->_model->getListing(['id' => $id]);
-        return view('admin.' . $this->_routePrefix . '.show', compact('data'));
+       
+        $this->initIndex();
+
+        $srch_params['course_id']                        = $id;
+        $this->_data['userId']     	=       \Auth::user()->id;
+        $this->_data['course_id']     	=    $id;
+        $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
+        $this->_data['orderBy']             = $this->_model->orderBy;
+        // $this->_data['filters']             = $this->_model->getFilters();
+        // dd($this->_data);
+        return view('admin.' . $this->_routePrefix . '.index', $this->_data);
     }
 
     /**
@@ -135,7 +152,14 @@ class CourseModuleController extends Controller
             'fields'     => [
                 'name'      => [
                     'type'          => 'text',
-                    'label'         => 'Module Name',
+                    'label'         => 'Name',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'tag_line'      => [
+                    'type'          => 'text',
+                    'label'         => 'Tag line',
                     'attributes'    => [
                         'required'  => true
                     ]
@@ -159,6 +183,70 @@ class CourseModuleController extends Controller
         return view('admin.components.admin-form', compact('data', 'id', 'form', 'breadcrumb', 'module'));
     }
 
+
+    /**
+     * ui parameters for form add and edit
+     *
+     * @param  string $id [description]
+     * @return [type]     [description]
+     */
+    protected function __formUiGenerationCreate(Request $request, $id = '')
+    {
+        $course_id = (isset($id))? $id : '';
+        $response = $this->initUIGeneration();
+        if($response) {
+            return $response;
+        }
+
+        extract($this->_data);
+        $this->_data['data'] = [];
+        $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
+        $form = [
+            'route'      => $this->_routePrefix.'.store',
+            'back_route' => route($this->_routePrefix . '.index'),
+            'fields'     => [
+                'name'      => [
+                    'type'          => 'text',
+                    'label'         => 'Name',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'course_id'      => [
+                    'type'          => 'hidden',
+                    'label'         => 'Course Id',
+                    'value'         => $course_id,
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'tag_line'      => [
+                    'type'          => 'text',
+                    'label'         => 'Tag line',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'description'      => [
+                    'type'          => 'textarea',
+                    'label'         => 'Description',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'status'            => [
+                    'type'          => 'radio',
+                    'label'         => 'Status',
+                    'options'       => $status,
+                    'value'         => isset($data->status) ? $data->status : 1,
+                ],
+            ],
+        ];
+
+        
+        return view('admin.components.admin-form', compact('data', 'id', 'form', 'breadcrumb', 'module'));
+    }
+
     /**
      * Form post action
      *
@@ -177,14 +265,14 @@ class CourseModuleController extends Controller
 
         $input      = $request->all();
         $response   = $this->_model->store($input, $id, $request);
-        
+
         if($response['status'] == 200){
             return redirect()
-                ->route($this->_routePrefix . '.index')
+                ->route($this->_routePrefix . '.show',$response['data']->course_id)
                 ->with('success',  $response['message']);
         } else {
             return redirect()
-                    ->route($this->_routePrefix . '.index')
+                    ->route($this->_routePrefix .'.show',$response['data']->course_id)
                     ->with('error', $response['message']);
         }
     }

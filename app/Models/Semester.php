@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CourseModule extends Model
+class Semester extends Model
 {
     use SoftDeletes;
 
-    protected $table    = 'course_module';
+    protected $table    = 'semester';
     
     protected $fillable = [
         
         'name',
+        'course_id',
+        'tag_line',
         'description',
         'status'
     ];
@@ -42,13 +44,16 @@ class CourseModule extends Model
 	{
         $status         = \App\Helpers\Helper::makeSimpleArray($this->statuses, 'id,name');
 		return [
-            'reset' => route('course_module.index'),
+            // 'reset' => route('semester.show'),
 			'fields' => [
 				'name'          => [
 		            'type'      => 'text',
-		            'label'     => 'Module Name'
+		            'label'     => 'Name'
 		        ],
-		       
+                'tag_line'          => [
+		            'type'      => 'text',
+		            'label'     => 'Tag line'
+		        ],
 		        'status'     => [
                     'type'       => 'select',
                     'label'      => 'Status',
@@ -72,9 +77,16 @@ class CourseModule extends Model
             ->when(isset($srch_params['name']), function($q) use($srch_params){
                 return $q->where($this->table . ".name", "LIKE", "%{$srch_params['name']}%");
             })
+            ->when(isset($srch_params['tag_line']), function($q) use($srch_params){
+                return $q->where($this->table . ".tag_line", "LIKE", "%{$srch_params['tag_line']}%");
+            })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);
+            })
+            ->when(isset($srch_params['course_id']), function($q) use($srch_params){
+                return $q->where($this->table . '.course_id', '=', $srch_params['course_id']);
             });
+
 
         if(isset($srch_params['id'])){
             return $listing->where($this->table . '.id', '=', $srch_params['id'])
@@ -118,6 +130,7 @@ class CourseModule extends Model
 
             $data->update($input);
         } else {
+            // dd($input);
             $data   = $this->create($input);
 		}
 		

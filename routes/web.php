@@ -90,6 +90,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	
 	});
 
+	Route::group(['prefix' => 'semester'], function () {
+		Route::get('index', 'App\Http\Controllers\SemesterController@index')->name('semester.index');
+		Route::get('show/{id}', 'App\Http\Controllers\SemesterController@show')->name('semester.show');
+		Route::get('create/{id}', 'App\Http\Controllers\SemesterController@create')->name('semester.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\SemesterController@edit')->name('semester.edit');
+		Route::post('store', 'App\Http\Controllers\SemesterController@store')->name('semester.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\SemesterController@update')->name('semester.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\SemesterController@destroy')->name('semester.destroy');
+	
+	});
+
 
 
 });
