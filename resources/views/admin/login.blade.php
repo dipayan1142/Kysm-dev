@@ -49,9 +49,9 @@
             <div class="mt-3">
                 <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Log In</button>
             </div>
-            <div class="mt-4 text-center">
+            {{-- <div class="mt-4 text-center">
                 <a href="{{url('/admin/password/reset')}}" class="text-muted"><i class="mdi mdi-lock mr-1"></i> Forgot your password?</a>
-            </div>
+            </div> --}}
         {{ Form::close() }}
     </div>
 </div>
