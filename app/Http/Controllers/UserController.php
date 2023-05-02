@@ -5,10 +5,12 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Models\CourseModule;
+use App\Models\Center_permission_module;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-
+use DB;
 class UserController extends Controller {
 	public function __construct($parameters = array()) {
 		parent::__construct($parameters);
@@ -175,7 +177,8 @@ class UserController extends Controller {
 		$roles      = [];
 		$userRoles  = [];
 		$ownAccount = true;
-
+		$courseM=[];
+		$selectmodule=[];
 		$this->initUIGeneration($id, false);
 		extract($this->_data);
 		if ($id) {
@@ -191,9 +194,17 @@ class UserController extends Controller {
 
 			$moduleName = 'Edit ' . $this->_module;
 			$userRoles  = $data->roles->pluck('id')->toArray();
+			
+			// $courseModulePer       = new Center_permission_module();
+       		//  $courseM       = $courseModulePer->getListing(['id'=> $id,])
+            // ->pluck('name', 'id')
+            // ->all();
+			$selectmodule=DB::table('center_permission_modules')->where('center_id', $id)->pluck('module_id')->all();
+			
 		}
 
 		if (Auth::user()->id != $id) {
+			
 			$ownAccount  = false;
 			$roleModel   = new \App\Models\Role();
 			$userMinRole = $this->_model->myRoleMinLevel(\Auth::user()->id);
@@ -205,6 +216,10 @@ class UserController extends Controller {
 				->all();
 		}
 		$status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
+		$courseModule       = new CourseModule();
+        $courseM       = $courseModule->getListing(['status'=>'1'])
+            ->pluck('name', 'id')
+            ->all();
 		
 		$form = [
 			'route'      		=> $this->_routePrefix . ($id ? '.update' : '.store'),
@@ -279,18 +294,18 @@ class UserController extends Controller {
     //                 'attributes'    => ['multiple' => true],
     //                 'value'         => isset($data->appointment) ? $data->appointment : []
 				// ],
-				// 'role_id'          => [
-				// 	'type'       => 'radio',
-				// 	'label'      => 'Role',
-				// 	'options'    => $roles,
-				// 	'attributes' => ['width' => 'col-lg-4 col-md-4 col-sm-12 col-xs-12'],
-				// 	// 'value'      => $userRoles,
-				// 	// if you want to single role for an User
-				// 	// change to radio instead of checkbox.
-				// 	// Comment upper value tag. And
-				// 	// uncomment value tag from below.
-				// 	'value'     => isset($userRoles[0]) ? $userRoles[0] : 0
-				// ],
+				'module_id'          => [
+					'type'       => 'checkbox',
+					'label'      => 'Course Module',
+					'options'    => $courseM,
+					'attributes' => ['width' => 'col-lg-4 col-md-4 col-sm-12 col-xs-12'],
+					  'value'      => $selectmodule,
+					// if you want to single role for an User
+					// change to radio instead of checkbox.
+					// Comment upper value tag. And
+					// uncomment value tag from below.
+					//'value'     => isset($selectmodule[0]) ? $selectmodule[0] : 0
+				],
 				'status'           => [
 					'type'       => 'radio',
 					'label'      => 'Status',
@@ -331,7 +346,7 @@ class UserController extends Controller {
 		if (Auth::user()->id != $id) {
 			$isOwnAcc = false;
 		}
-
+		//echo "<pre/>"; print_r($request->all()); die;
 		$input    = $request->all();
 		
 		$response = $this->_model->store($input, $id, $request);

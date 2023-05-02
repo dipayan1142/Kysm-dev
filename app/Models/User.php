@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-
+use DB;
 class User extends Authenticatable
 {
 	use HasApiTokens, Notifiable, SoftDeletes;
@@ -34,6 +34,7 @@ class User extends Authenticatable
 		'status', // 0 = inactive and email unverified, 1 = active, 2 = inactive and email verified, 3 = user rejected by admin
 		'verified',
 		'login_attempt',
+		
 	];
 
 	public $statuses = [
@@ -79,6 +80,7 @@ class User extends Authenticatable
 		'updated_at',
 		'deleted_at',
 		'profile_pic',
+		
 	];
 
 	/**
@@ -124,7 +126,7 @@ class User extends Authenticatable
 		return [
 			'reset'  => route('users.index'),
 			'fields' => [
-				'full_name'  => [
+				'center_name'  => [
 					'type'  => 'text',
 					'label' => 'Name',
 				],
@@ -136,11 +138,11 @@ class User extends Authenticatable
 					'type'  => 'text',
 					'label' => 'Phone',
 				],
-				'role'  => [
-					'type'    => 'select',
-					'label'   => 'Role',
-					'options' => $roles,
-				],
+				// 'role'  => [
+				// 	'type'    => 'select',
+				// 	'label'   => 'Role',
+				// 	'options' => $roles,
+				// ],
 				'status'     => [
 					'type'       => 'select',
 					'label'      => 'Status',
@@ -229,11 +231,14 @@ class User extends Authenticatable
 				return $q->where($this->table . ".id", ">=", $srch_params['id_gte']);
 			})
 			->when(isset($srch_params['name']), function ($q) use ($srch_params) {
-				return $q->whereRaw("{$this->table}.first_name LIKE '{$srch_params['name']}%'");
+				return $q->whereRaw("{$this->table}.center_name LIKE '{$srch_params['name']}%'");
 			})
-			->when(isset($srch_params['full_name']), function ($q) use ($srch_params) {
-				return $q->whereRaw("CONCAT({$this->table}.first_name, ' ', {$this->table}.last_name) LIKE '%{$srch_params['full_name']}%'");
+			->when(isset($srch_params['center_name']), function ($q) use ($srch_params) {
+				return $q->whereRaw("{$this->table}.center_name LIKE '%{$srch_params['center_name']}%'");
 			})
+			// ->when(isset($srch_params['center_name']), function ($q) use ($srch_params) {
+			// 	return $q->whereRaw("CONCAT({$this->table}.center_name, ' ', {$this->table}.first_name) LIKE '%{$srch_params['center_name']}%'");
+			// })
 			->when(isset($srch_params['email']), function ($q) use ($srch_params) {
 				return $q->whereRaw("{$this->table}.email LIKE '%{$srch_params['email']}%'");
 			})
@@ -346,6 +351,7 @@ class User extends Authenticatable
 		// } else {
 		// 	$input = array_except($input, array('password'));
 		// }
+		
 		if ($id) {
 			$input = array_except($input, array('password'));
 		}else{
@@ -372,7 +378,8 @@ class User extends Authenticatable
 			//$input['username'] = Helper::randomString(15);
 			$data              = $this->create($input);
 
-			$responseStatus = 201;
+			//$responseStatus = 201;
+			$responseStatus = 200;
 		} else {
 			if (isset($input['email'])) {
 				unset($input['email']);
@@ -434,6 +441,17 @@ class User extends Authenticatable
 		// 	}
 		// }
 		if ($id) {
+			DB::table('center_permission_modules')->where('center_id', $id)->delete();
+				if($request->module_id){
+						
+					foreach ($request->module_id as $key => $mval) {
+						
+						\App\Models\Center_permission_module::create([
+							'center_id' => $data->id,
+							'module_id' => $mval,
+						]);
+					}
+				}
 					
 		 	}else{
 
@@ -441,6 +459,18 @@ class User extends Authenticatable
 					'user_id' => $data->id,
 					'role_id' => 2,
 				]);
+				
+				
+				if($request->module_id){
+					
+					foreach ($request->module_id as $key => $mval) {
+						
+						\App\Models\Center_permission_module::create([
+							'center_id' => $data->id,
+							'module_id' => $mval,
+						]);
+					}
+				}
 
 			}
 			
