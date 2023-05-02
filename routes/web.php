@@ -101,6 +101,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	
 	});
 
+	Route::group(['prefix' => 'admission'], function () {
+		Route::get('index', 'App\Http\Controllers\AdmissionController@index')->name('admission.index');
+		Route::get('create', 'App\Http\Controllers\AdmissionController@create')->name('admission.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\AdmissionController@edit')->name('admission.edit');
+		Route::post('store', 'App\Http\Controllers\AdmissionController@store')->name('admission.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\AdmissionController@update')->name('admission.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\AdmissionController@destroy')->name('admission.destroy');
+	});
+
+	Route::group(['prefix' => 'change_password'], function () {
+		Route::get('create', 'App\Http\Controllers\ChangePasswordController@create')->name('change_password.create');
+		Route::post('store', 'App\Http\Controllers\ChangePasswordController@store')->name('change_password.store');
+	});
+
 
 
 });

@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseModule;
-class CourseController extends Controller
+class AdmissionController extends Controller
 {
     public function __construct($parameters = array())
     {
         parent::__construct($parameters);
         
-        $this->_module      = 'Course';
-        $this->_routePrefix = 'course';
+        $this->_module      = 'Admission';
+        $this->_routePrefix = 'admission';
         $this->_model       = new Course();
     }
 
@@ -26,7 +26,7 @@ class CourseController extends Controller
     {
        
         $this->initIndex();
-        $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'CourseController');
+        $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'AdmissionController');
         $srch_params                        = $request->all();
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;
