@@ -149,6 +149,24 @@
         </div>
       </div>
 
+      
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="name">Admission Form Number</label>
+          <input type="text"
+            class="form-control" name="addmission-form_number" id="m_no" placeholder="Enter Admission Form Number">
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="name">Total Fees</label>
+          <input type="text"
+            class="form-control" name="total_fess" id="m_no" placeholder="Enter total fees">
+        </div>
+      </div>
+
 
     </div>
     <div class="row mt-3">
