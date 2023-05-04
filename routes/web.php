@@ -111,6 +111,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	});
 
 	Route::group(['prefix' => 'change_password'], function () {
+		Route::get('index', 'App\Http\Controllers\ChangePasswordController@index')->name('change_password.index');
 		Route::get('create', 'App\Http\Controllers\ChangePasswordController@create')->name('change_password.create');
 		Route::post('store', 'App\Http\Controllers\ChangePasswordController@store')->name('change_password.store');
 	});

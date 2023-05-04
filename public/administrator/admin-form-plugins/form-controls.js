@@ -247,4 +247,12 @@ $(document).ready(function(){
             }
           })
 	});
+
+	
+	$(document).on("change", "#course_name", function(){
+		var course_name = $(this).val();
+		getareahierarch('');
+	});
+
+	
 });

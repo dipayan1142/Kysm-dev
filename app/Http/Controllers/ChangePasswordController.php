@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\CourseModule;
+use App\Models\User;
+// use Hash;
+use Illuminate\Support\Facades\Hash;
 class ChangePasswordController extends Controller
 {
     public function __construct($parameters = array())
@@ -13,8 +14,8 @@ class ChangePasswordController extends Controller
         parent::__construct($parameters);
         
         $this->_module      = 'Change Password';
-        $this->_routePrefix = 'admission';
-        $this->_model       = new Course();
+        $this->_routePrefix = 'change_password';
+        $this->_model       = new User();
     }
 
 
@@ -25,6 +26,8 @@ class ChangePasswordController extends Controller
      */
     public function create(Request $request)
     {
+        // echo "+++";
+        // die;
         return $this->__formUiGeneration($request);
     }
 
@@ -49,20 +52,22 @@ class ChangePasswordController extends Controller
     protected function __formUiGeneration(Request $request, $id = '')
     {
         $response = $this->initUIGeneration($id);
+       
+
         if($response) {
             return $response;
         }
-        $courseModule       = new CourseModule();
-        $courseM       = $courseModule->getListing(['status'=>'1'])
-            ->pluck('name', 'id')
-            ->all();
-
+    
         extract($this->_data);
-        $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
+       
+        $breadcrumb =[
+            "http://127.0.0.1:8000/admin/change_password/create" => "Change Passwords",
+            "#" => "Add Change Password"
+        ];
         
         $form = [
-            'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
-            'back_route' => route($this->_routePrefix . '.index'),
+            'route'      => $this->_routePrefix . ($id ? '.store' : '.store'),
+            'back_route' => route($this->_routePrefix . '.create'),
             
             'fields'     => [
                 
@@ -106,24 +111,41 @@ class ChangePasswordController extends Controller
     protected function __formPost(Request $request, $id = '')
     {
         $validationRules = [
-            'course_name'          => 'required',
-            'course_title'          => 'required',
-            'duration'            => 'required|max:255'
+            'current_password'   => 'required',
+            'new_password'       => 'required',
+            'confirm_password'   => 'required'
         ];
 
         $this->validate($request, $validationRules);
 
         $input      = $request->all();
-        $response   = $this->_model->store($input, $id, $request);
+
+        $srch_params['id'] =       \Auth::user()->id;
+        $srch_params['single_record'] = true ;
+        $user_row=$this->_model->getListing($srch_params, $this->_offset);
         
-        if($response['status'] == 200){
+        if(Hash::check($input['current_password'],$user_row->password))
+        {
+            // dd($user_row);
+            $input['password'] = Hash::make($input['current_password']);
+
+            // $data = \Auth::user();
+			// $data->update($input);
+
+            // $user_row->password=$input['password'];
+            // $user_row->update($input);
+            $this->_model::where('id',$srch_params['id'])->update(['password'=>$input['password']]);
+        
             return redirect()
-                ->route($this->_routePrefix . '.index')
-                ->with('success',  $response['message']);
-        } else {
-            return redirect()
-                    ->route($this->_routePrefix . '.index')
-                    ->with('error', $response['message']);
+                    ->route($this->_routePrefix . '.create')
+                    ->with('success','Password change successfully.');
+           
         }
+        else
+        {
+            return redirect()
+                    ->route($this->_routePrefix . '.create')
+                    ->with('error', 'Your current password is incorrect.');
+        } 
     }
 }
