@@ -34,7 +34,7 @@
                         <div class="d-flex flex-wrap">
                             <div class="mr-3">
                                 <p class="text-muted mb-2">Courses</p>
-                                <h5 class="mb-0">4,235</h5>
+                                <h5 class="mb-0">{{$all_data['total_course']}}</h5>
                             </div>
 
                             <div class="avatar-sm ml-auto">
