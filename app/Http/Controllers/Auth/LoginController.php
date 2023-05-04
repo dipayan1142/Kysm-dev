@@ -69,9 +69,9 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 
-       
         $this->validateLogin($request);
-        
+        // dd($request->all());
+        // dd('hi');
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
@@ -81,6 +81,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
+        
         // echo "<pre/>"; print_r($request->all()); die;
 
         // Customization: Validate if client status is active (1)
@@ -89,7 +90,7 @@ class LoginController extends Controller
         // Customization: It's assumed that email field should be an unique field
         $client = User::where($this->username(), $email)->first();
 
-        
+      
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
@@ -99,21 +100,22 @@ class LoginController extends Controller
         if (empty($client)) {
             return $this->sendFailedLoginResponse($request, 'Please check your username or password.');
         }
-
+       
         // Customization: If client status is inactive (0) return failed_status error.
         if ($client->status === 0) {
             return $this->sendFailedLoginResponse($request, 'Your Account is blocked. Please conract administrator.');
         }
-
+       
         // if (!$client->verified) {
         //     return $this->sendFailedLoginResponse($request, 'Account is not verified yet.');
         // }
 
         // Customization: Validate if client status is active (1)
+    
         if ($this->attemptLogin($request)) {
             return $this->sendLoginResponse($request);
         }
-
+       
         return $this->sendFailedLoginResponse($request);
     }
 

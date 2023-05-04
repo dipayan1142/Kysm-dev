@@ -263,6 +263,10 @@ class User extends Authenticatable
 			return $listing->get()->count();
 		}
 
+		if (isset($srch_params['single_record'])) {
+			return $listing->latest()->first();
+		}
+
 		if (isset($srch_params['orderBy'])) {
 			$this->orderBy = \App\Helpers\Helper::manageOrderBy($srch_params['orderBy']);
 			foreach ($this->orderBy as $key => $value) {
@@ -341,6 +345,7 @@ class User extends Authenticatable
 
 	public function store($input = [], $id = 0, $request = null)
 	{
+	
 		// if (!empty($input['password'])) {
 		// 	$input['password'] = Hash::make($input['password']);
 		// } else {

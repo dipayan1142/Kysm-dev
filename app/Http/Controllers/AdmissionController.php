@@ -42,7 +42,8 @@ class AdmissionController extends Controller
      */
     public function create(Request $request)
     {
-        return $this->__formUiGeneration($request);
+        return view('admin.admission.add');
+        // return $this->__formUiGeneration($request);
     }
 
     /**
@@ -53,6 +54,7 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         return $this->__formPost($request);
     }
 
@@ -120,101 +122,140 @@ class AdmissionController extends Controller
      */
     protected function __formUiGeneration(Request $request, $id = '')
     {
+        $courseModuleName=$coursesName=0;
+
         $response = $this->initUIGeneration($id);
         if($response) {
             return $response;
         }
-        $courseModule       = new CourseModule();
-        $courseM       = $courseModule->getListing(['status'=>'1'])
-            ->pluck('name', 'id')
-            ->all();
-
         extract($this->_data);
+        $courseModuleName        =$request->old('course_name') ? $request->old('course_name') : $courseModuleName ;
+        $coursesName        =$request->old('c_code') ? $request->old('c_code') : $coursesName ;
+
+        $courseModuleModel       = new CourseModule();
+        $courseModule      = $courseModuleModel->getListing(['status'=>'1'])
+            ->pluck('name', 'id');
+
+        $courses=[];
+        if($courseModuleName)
+        {
+            $courseModel       = new Course();
+            $courses       = $course->getListing(['module_id'=>$courseModuleName])
+                ->pluck('course_name', 'id');  
+        }
+          
+
         $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
         
         $form = [
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
-            
+            'include_scripts'   => '<script src="'. asset('administrator/admin-form-plugins/form-controls.js'). '"></script>',
             'fields'     => [
-                'module_id'      => [
+                'name'      => [
+                    'type'          => 'text',
+                    'label'         => 'Name',
+                    'attributes'    => [
+                    
+                        'required'  => true
+                    ]
+                ],
+                'f_name'      => [
+                    'type'          => 'text',
+                    'label'         => 'Father Name',
+                    'attributes'    => [
+                    
+                        'required'  => true
+                    ]
+                ],
+                'dob'      => [
+                    'type'          => 'date',
+                    'label'         => 'Date of Birth',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
+                'doa'        => [
+                    'type'          => 'date',
+                    'label'         => 'Date of Admission',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'course_name'        => [
                     'type'          => 'select',
                     'label'         => 'Select Module',
-                    'options'       => $courseM,
-                    'value'         => isset($data->module_id) ? $data->module_id : 1,
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'course_name'      => [
-                    'type'          => 'text',
-                    'label'         => 'Course Name',
-                    'attributes'    => [
-                    
-                        'required'  => true
-                    ]
-                ],
-                'course_title'      => [
-                    'type'          => 'text',
-                    'label'         => 'Course Title',
+                    'options'       => $courseModule,
+                    'value'         => isset($data->course_name) ? $data->course_name : 1,
                     'attributes'    => [
                         'required'  => true
                     ]
                 ],
-                'tag_line'        => [
-                    'type'          => 'text',
-                    'label'         => 'Tag Line',
+                'c_code'        => [
+                    'type'          => 'select',
+                    'label'         => 'Course Code',
+                    'options'       => $courses,
+                    'value'         => isset($data->c_code) ? $data->c_code : 1,
                     'attributes'    => [
-                        
                         'required'  => true
                     ]
                 ],
-                'short_description'        => [
-                    'type'          => 'text',
-                    'label'         => 'Short Description',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'duration'        => [
-                    'type'          => 'text',
-                    'label'         => 'Duration',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'eligibility'        => [
-                    'type'          => 'text',
-                    'label'         => 'Eligibility',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'availibity'        => [
-                    'type'          => 'text',
-                    'label'         => 'Availibity',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'about_course'        => [
+                'address'        => [
                     'type'          => 'textarea',
-                    'label'         => 'About Course',
+                    'label'         => 'Address',
                     'attributes'    => [
                         
                         'required'  => true
                     ]
                 ],
-                'key_features'        => [
-                    'type'          => 'textarea',
-                    'label'         => 'Features',
+                'po'        => [
+                    'type'          => 'text',
+                    'label'         => 'Post Office',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'ps'        => [
+                    'type'          => 'text',
+                    'label'         => 'Police Station',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+                'dis'        => [
+                    'type'          => 'text',
+                    'label'         => 'District',
                     
                 ],
+                'pin'        => [
+                    'type'          => 'text',
+                    'label'         => 'Pin Code',
+                    
+                ],
+                'l_no'        => [
+                    'type'          => 'text',
+                    'label'         => 'Contact No',
+                    
+                ],
+                'm_no'        => [
+                    'type'          => 'text',
+                    'label'         => 'Whatsapp No',
+                    
+                ],
+                'religion'        => [
+                    'type'          => 'text',
+                    'label'         => 'Religion',
+                    
+                ],
+                'cast'        => [
+                    'type'          => 'text',
+                    'label'         => 'Cast',
+                    
+                ],
+                
                 'status'            => [
                     'type'          => 'radio',
                     'label'         => 'Status',
