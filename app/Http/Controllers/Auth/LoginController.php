@@ -82,7 +82,7 @@ class LoginController extends Controller
         }
 
         
-        // echo "<pre/>"; print_r($request->all()); die;
+       
 
         // Customization: Validate if client status is active (1)
         $email = $request->get($this->username());
@@ -111,8 +111,9 @@ class LoginController extends Controller
         // }
 
         // Customization: Validate if client status is active (1)
-    
+        
         if ($this->attemptLogin($request)) {
+            
             return $this->sendLoginResponse($request);
         }
        
@@ -143,7 +144,7 @@ class LoginController extends Controller
     protected function sendFailedLoginResponse(Request $request, $trans = 'auth.failed')
     {
         $errors = [$this->username() => trans($trans)];
-
+       
         if ($request->expectsJson()) {
             return response()->json($errors, 422);
         }
