@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseModule;
+use App\Models\Admission;
+use App\Models\AdmissionDetails;
+use App\Models\User;
 class AdmissionController extends Controller
 {
     public function __construct($parameters = array())
@@ -14,7 +17,7 @@ class AdmissionController extends Controller
         
         $this->_module      = 'Admission';
         $this->_routePrefix = 'admission';
-        $this->_model       = new Course();
+        $this->_model       = new Admission();
     }
 
     /**
@@ -42,7 +45,9 @@ class AdmissionController extends Controller
      */
     public function create(Request $request)
     {
-        return view('admin.admission.add');
+        $courseModule       = new CourseModule();
+        $courseModuleData      = $courseModule->getListing(['status'=>'1']);
+        return view('admin.admission.add',compact('courseModuleData'));
         // return $this->__formUiGeneration($request);
     }
 
@@ -54,8 +59,82 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        return $this->__formPost($request);
+        // dd($request->all());
+        // return $this->__formPost($request);
+
+        $validationRules = [
+            'name'          => 'required',
+            'f_name'          => 'required',
+            'dob'          => 'required',
+            'doa'          => 'required',
+            'course_name'          => 'required',
+            'c_code'          => 'required',
+        ];
+
+        $this->validate($request, $validationRules);
+
+        $input      = $request->all();
+        $courseModule       = new CourseModule();
+        $courseModuleRow=$courseModule->getListing(['id'=>$input['course_name']]);
+    
+        $userId     	=       \Auth::user()->id;
+        $user       = new User();
+        $userRow=$user->getListing(['id'=>$userId]);
+
+      
+        $admission_info = [
+			"c_id" =>$userRow->username,
+			"name" => $input['name'],
+			"f_name" => $input['f_name'],
+            "dob"=>$input['dob'],
+            "doa"=>$input['doa'],
+            "course_name"=> $courseModuleRow->name,
+            "c_code"=>$input['c_code'],
+            "address"=>$input['address'],
+            "po"=>$input['po'],
+            "ps"=>$input['ps'],
+            "dis"=>$input['dis'],
+            "pin"=>$input['pin'],
+            "l_no"=>$input['l_no'],
+            "m_no"=>$input['m_no'],
+            "religion"=>$input['religion'],
+            "cast"=>$input['cast'],
+            "admission_form_number"=>$input['admission_form_number'],
+            "total_fees"=>$input['total_fees'],
+            "s_id"=>"abc",
+            "s_idn"=>1111,
+            "course_id"=>$input['course_name']
+		];
+        $return_data = Admission::create($admission_info);
+       
+        
+        $admission_details = [
+			"c_id" =>$userRow->username,
+			"student_info_id" => $return_data->id,
+			"exam" => $input['exam'],
+            "year"=>$input['year'],
+            "board"=>$input['board'],
+            "marks"=>$input['marks'],
+            "10th_year"=>$input['10th_year'],
+            "10th_board"=>$input['10th_board'],
+            "10th_marks"=>$input['10th_marks'],
+            "12th_year"=>$input['12th_year'],
+            "12th_board"=>$input['12th_board'],
+            "12th_marks"=>$input['12th_marks'],
+            "g_year"=>$input['g_year'],
+            "g_board"=>$input['g_board'],
+            "g_marks"=>$input['g_marks'],
+            "p_year"=>$input['p_year'],
+            "p_board"=>$input['p_board'],
+            "p_marks"=>$input['p_marks'],
+            "s_id"=>$return_data->s_id
+		];
+
+		AdmissionDetails::create($admission_details);
+        return redirect()
+                ->route($this->_routePrefix . '.index')
+                ->with('success','Admission added successfully.');
+        
     }
 
     /**

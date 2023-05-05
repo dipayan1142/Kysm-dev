@@ -15,17 +15,9 @@
   <table class="table table-condensed mh-200">
     <thead>
       <tr>
-        <th>Module </th>
-        <th>Name </th>
-        <th>Title</th>
-        <th>Tag Line</th>
-        <th>Short Desc</th>
-        <th>Duration</th>
-        <th>Eligibility</th>
-        <th>Availibity</th>
-        <!-- <th>About</th>
-        <th>Feature</th> -->
-
+        <th>Name & Date</th>
+        <th>Contact No</th>
+        <th>Other</th>
         <th>Status</th>
         <th>Created At</th>
         @if($permission['edit'] || $permission['destroy'])
@@ -39,20 +31,32 @@
       
       <tr>
        
-      <td> {{ $val->name }}</td>
-        <td>
-        
-          {{ $val->course_name }}       
+        <td> 
+          <div>
+          <span style="display: block ruby;">Name: {{ $val->name }}</span>
+          <span style="display: block ruby;">Father Name: {{ $val->f_name }}</span>
+          <span style="display: block ruby;">Date of Birth: {{ $val->dob }}</span>
+          <span style="display: block ruby;">Date of Admission: {{ $val->dob }}</span>
+          
+          </div>
+        </td>
 
-      </td>
-        <td> {{ $val->course_title }}</td>
-        <td> {{ $val->tag_line }}</td>
-        <td>{{ $val->short_description }}</td>
-        <td> {{ $val->duration }}</td>
-        <td> {{ $val->eligibility }}</td>
-        <td> {{ $val->availibity }}</td>
-        <!-- <td> {{ $val->about_course }}</td>
-        <td> {{ $val->key_features }}</td> -->
+        <td>
+          <div>
+            <span style="display: block ruby;">Mobile: {{ $val->m_no }}</span>
+            <span style="display: block ruby;">Whatsapp: {{ $val->l_no }}</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <span style="display: block ruby;">Religion: {{ $val->religion }}</span>
+            <span style="display: block ruby;">Cast: {{ $val->cast }}</span>
+            <span style="display: block ruby;">Form Number: {{ $val->admission_form_number }}</span>
+            <span style="display: block ruby;">Total Fees: {{ $val->total_fees }}</span>
+            
+            </div>
+        </td>
+       
         <td><span class="badge badge-pill badge-soft-{{ $val->statuses[$val->status]['badge'] }} font-size-12">{!! $val->statuses[$val->status]['name'] !!}</span></td>
         <td>{{ \App\Helpers\Helper::showDate($val->created_at) }}</td>
         @if($permission['edit'] || $permission['destroy'])

@@ -47,9 +47,10 @@
           <div class="form-group">
             <label for="name">Module Name</label>
             <select required="" id="course_name" class="form-control"  name="course_name">
-              <option value="">Select Option</option>
-              <option value="3">test</option>
-              <option value="4">module1</option>
+              <option value="">Select Module</option>
+              @foreach ($courseModuleData as $item)
+                <option value="{{ $item->id}}">{{ $item->name}}</option>
+              @endforeach
             </select>
           </div>
         </div>
@@ -108,7 +109,7 @@
         <div class="form-group">
           <label for="name">Mobile No</label>
           <input type="text"
-            class="form-control" name="l_no" id="l_no" placeholder="Enter Your Mobile No">
+            class="form-control" name="m_no" id="m_no" placeholder="Enter Your Mobile No">
         </div>
       </div>
 
@@ -116,7 +117,7 @@
         <div class="form-group">
           <label for="name">Whatsapp No</label>
           <input type="text"
-            class="form-control" name="m_no" id="m_no" placeholder="Enter Your Whatsapp No">
+            class="form-control" name="l_no" id="l_no" placeholder="Enter Your Whatsapp No">
         </div>
       </div>
 
@@ -146,6 +147,24 @@
             <option value="OBC-A">OBC-A</option>
             <option value="OBC-B">OBC-B</option>
           </select>
+        </div>
+      </div>
+
+      
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="name">Admission Form Number</label>
+          <input type="text"
+            class="form-control" name="admission_form_number" id="admission_form_number" placeholder="Enter Admission Form Number">
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="name">Total Fees</label>
+          <input type="text"
+            class="form-control" name="total_fees" id="total_fees" placeholder="Enter total fees">
         </div>
       </div>
 
