@@ -131,7 +131,10 @@ class CourseController extends Controller
 
         extract($this->_data);
         $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
-        
+        $courseArOption=[
+            '0'=>'NO',
+            '1'=>'YES'
+        ];
         $form = [
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
@@ -215,6 +218,17 @@ class CourseController extends Controller
                     'label'         => 'Features',
                     
                 ],
+                'is_propular_course'      => [
+                    'type'          => 'select',
+                    'label'         => 'Is Propular Course',
+                    'options'       => $courseArOption,
+                    'value'         => isset($data->is_propular_course) ? $data->is_propular_course : 0,
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
+
                 'status'            => [
                     'type'          => 'radio',
                     'label'         => 'Status',

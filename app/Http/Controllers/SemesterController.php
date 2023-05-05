@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Semester;
-
+use DB;
 class SemesterController extends Controller
 {
     public function __construct($parameters = array())
@@ -84,6 +84,10 @@ class SemesterController extends Controller
         $this->_data['orderBy']             = $this->_model->orderBy;
         // $this->_data['filters']             = $this->_model->getFilters();
         // dd($this->_data);
+
+        $singeCourse=DB::table('courses')->select('course_name')->where('id', $id)->first();
+        $this->_data['singeCourse']         =$singeCourse;
+
         return view('admin.' . $this->_routePrefix . '.index', $this->_data);
     }
 

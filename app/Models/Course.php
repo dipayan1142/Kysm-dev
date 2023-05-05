@@ -24,6 +24,7 @@ class Course extends Model
         'about_course',
         'key_features',
         'status',
+        'is_propular_course'
         
     ];
 
