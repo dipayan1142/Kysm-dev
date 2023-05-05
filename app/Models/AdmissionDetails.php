@@ -5,34 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Admission extends Model
+class AdmissionDetails extends Model
 {
     use SoftDeletes;
 
-    protected $table    = 'student_info';
+    protected $table    = 'student_edu_info';
     
     protected $fillable = [
         'c_id',
-        'name',
-        'f_name',
-        'dob',
-        'doa',
-        'course_name',
-        'c_code',
-        'address',
-        'po',
-        'ps',
-        'dis',
-        'pin',
-        'l_no',
-        'm_no',
-        'religion',
-        'cast',
+        'student_info_id',
+        'exam',
+        'year',
+        'board',
+        'marks',
+        '10th_in_name',
+        '10th_year',
+        '10th_board',
+        '10th_marks',
+        '12th_year',
+        '12th_board',
+        '12th_marks',
+        'g_year',
+        'g_board',
+        'g_marks',
+        'p_year',
+        'p_board',
+        'p_marks',
         's_id',
-        's_idn',
-        'course_id',
-        'admission_form_number',
-        'total_fees',
         'status',
         
     ];
@@ -67,14 +66,26 @@ class Admission extends Model
 		return [
             'reset' => route('course.index'),
 			'fields' => [
-				'name'          => [
+                'module_id'     => [
+                    'type'       => 'select',
+                    'label'      => 'Module',
+                    'attributes' => [
+                        'id' => 'module',
+                    ],
+                    'options'    => $courseM,
+                ],
+				'course_name'          => [
 		            'type'      => 'text',
-		            'label'     => 'Name'
+		            'label'     => 'Course Name'
 		        ],
-		        'm_no'         => [
+		        'course_title'         => [
 		            'type'      => 'text',
-		            'label'     => 'Mobile No'
+		            'label'     => 'Course Title'
 		        ],
+		        // 'tag_line'        => [
+		        //     'type'      => 'text',
+		        //     'label'     => 'Tag Line'
+		        // ],
 		        'status'     => [
                     'type'       => 'select',
                     'label'      => 'Status',
@@ -90,8 +101,9 @@ class Admission extends Model
     public function getListing($srch_params = [], $offset = 0)
     {
         $listing = self::select(
-                $this->table . ".*"
-            )->leftJoin('student_edu_info', 'student_edu_info.student_info_id', '=', $this->table.'.id')
+                $this->table . ".*",
+                'course_module.name'
+            )->leftJoin('course_module', 'course_module.id', '=', $this->table.'.module_id')
             ->when(isset($srch_params['with']), function ($q) use ($srch_params) {
 				return $q->with($srch_params['with']);
 			})
