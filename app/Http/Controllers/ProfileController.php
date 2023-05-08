@@ -78,7 +78,7 @@ class ProfileController extends Controller
 
         $selectmodule=DB::table('center_permission_modules')->where('center_id', $id)->pluck('module_id')->all();
 
-        dd($selectmodule);
+        // dd($selectmodule);
      
 
         $form = [
