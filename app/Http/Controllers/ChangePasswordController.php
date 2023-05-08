@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-// use Hash;
-use Illuminate\Support\Facades\Hash;
+use Hash;
+
 class ChangePasswordController extends Controller
 {
     public function __construct($parameters = array())
@@ -121,21 +121,26 @@ class ChangePasswordController extends Controller
         $input      = $request->all();
 
         $srch_params['id'] =       \Auth::user()->id;
+        $user_id        = \Auth::user()->id;
         $srch_params['single_record'] = true ;
-        $user_row=$this->_model->getListing($srch_params, $this->_offset);
+        $data=$this->_model->getListing($srch_params, $this->_offset);
         
-        if(Hash::check($input['current_password'],$user_row->password))
+        if(Hash::check($input['current_password'],$data->password))
         {
             // dd($user_row);
-            $input['password'] = Hash::make($input['current_password']);
+            $update['password'] = Hash::make($input['new_password']);
 
-            // $data = \Auth::user();
-			// $data->update($input);
+			if (!$data) {
+				return \App\Helpers\Helper::resp('Not a valid data', 400);
+			}
 
-            // $user_row->password=$input['password'];
-            // $user_row->update($input);
-            $this->_model::where('id',$srch_params['id'])->update(['password'=>$input['password']]);
-        
+			if ($data->update($update)) {
+				$data = $this->_model->getListing([
+					'id'              => $id,
+					'id_greater_than' => $user_id,
+				]);
+			}
+          
             return redirect()
                     ->route($this->_routePrefix . '.create')
                     ->with('success','Password change successfully.');

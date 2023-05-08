@@ -145,8 +145,12 @@ class AdmissionController extends Controller
      */
     public function show($id)
     {
-        $data = $this->_model->getListing(['id' => $id]);
-        return view('admin.' . $this->_routePrefix . '.show', compact('data'));
+
+        $courseModule       = new CourseModule();
+        $courseModuleData      = $courseModule->getListing(['status'=>'1']);
+        return view('admin.admission.view',compact('courseModuleData'));
+        // $data = $this->_model->getListing(['id' => $id]);
+        // return view('admin.' . $this->_routePrefix . '.show', compact('data'));
     }
 
     /**
@@ -157,7 +161,10 @@ class AdmissionController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        return $this->__formUiGeneration($request, $id);
+        $courseModule       = new CourseModule();
+        $courseModuleData      = $courseModule->getListing(['status'=>'1']);
+        return view('admin.admission.edit',compact('courseModuleData'));
+        // return $this->__formUiGeneration($request, $id);
     }
 
     /**
