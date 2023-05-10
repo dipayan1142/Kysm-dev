@@ -134,6 +134,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	
 	});
 
+	Route::group(['prefix' => 'contact'], function () {
+		Route::get('index', 'App\Http\Controllers\ContactusController@index')->name('contact.index');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\ContactusController@destroy')->name('contact.destroy');
+	});
 
 
 });

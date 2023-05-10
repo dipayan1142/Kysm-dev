@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use DB;
 class CourseModule extends Model
 {
     use SoftDeletes;
@@ -63,6 +63,18 @@ class CourseModule extends Model
 
     public function getListing($srch_params = [], $offset = 0)
     {
+        $user       = \Auth::user();
+        $userModel  = new \App\Models\User();
+        $userRoles  = $userModel->myRoles([
+            'user_id'   => $user->id
+        ], false);
+        $userRoles  = $userRoles->pluck('id')->toArray();
+
+        $getCenterModule = DB::table('center_permission_modules')
+        ->where('center_id',$user->id)
+		->pluck('module_id')->toArray();
+	
+	
         $listing = self::select(
                 $this->table . ".*"
             )
@@ -80,6 +92,11 @@ class CourseModule extends Model
             return $listing->where($this->table . '.id', '=', $srch_params['id'])
                             ->first();
         }
+
+        if (in_array(2, $userRoles))
+        {
+             $listing->whereIn($this->table . '.id', $getCenterModule);
+        } 
 
         if(isset($srch_params['orderBy'])){
             $this->orderBy = \App\Helpers\Helper::manageOrderBy($srch_params['orderBy']);
@@ -102,7 +119,7 @@ class CourseModule extends Model
         } else {
             $listing = $listing->get();
         }
-
+   
         return $listing;
     }
 

@@ -1,5 +1,5 @@
 @php ($headerOption = [
-  'title' => $module,
+  'title' => $module .' Of ' .$singeCourse->course_name,
   'header_buttons' => [
     ($permission['create'] ? '<a class="btn btn-primary waves-effect" href="'. route($routePrefix . '.create',$course_id) .'" data-toggle="tooltip" data-original-title="Add New Record">'. \Config::get('settings.icon_add') .' <span>Add New</span></a>' : '')
   ],
