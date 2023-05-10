@@ -78,7 +78,7 @@ class ProfileController extends Controller
 
         $selectmodule=DB::table('center_permission_modules')->where('center_id', $id)->pluck('module_id')->all();
 
-        dd($selectmodule);
+        // dd($selectmodule);
      
 
         $form = [
@@ -146,20 +146,13 @@ class ProfileController extends Controller
 				
 				    
 				],
-				'module_id'          => [
-					'type'       => 'checkbox',
-					'label'      => 'Course Module',
-					'options'    => $courseM,
-					'attributes' => ['width' => 'col-lg-4 col-md-4 col-sm-12 col-xs-12'],
-					  'value'      => $selectmodule,
+                'banner_picture'       => [
+					'type'       => 'file',
+					'label'      => 'Banner Picture',
+                    'attributes' => ['multiple' => true],
+				    
 				],
-				'status'           => [
-					'type'       => 'radio',
-					'label'      => 'Status',
-					'options'    => $status,
-					'value'      => isset($data->status) ? $data->status : 1,
-					'attributes' => ['width' => 'col-lg-4 col-md-4 col-sm-12 col-xs-12'],
-				],
+				
 			],
 		];
 
@@ -213,5 +206,5 @@ class ProfileController extends Controller
                     ->with('error', 'Your current password is incorrect.');
         } 
     }
-    
+
 }

@@ -32,6 +32,7 @@ class AdmissionController extends Controller
         $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'AdmissionController');
         $srch_params                        = $request->all();
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
+        // dd($this->_data['data'] );
         $this->_data['orderBy']             = $this->_model->orderBy;
         $this->_data['filters']             = $this->_model->getFilters();
         return view('admin.' . $this->_routePrefix . '.index', $this->_data)
@@ -161,9 +162,13 @@ class AdmissionController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $srch_params['id']=$id;
+        $admission                = $this->_model->getListing($srch_params, $this->_offset);
+
+
         $courseModule       = new CourseModule();
         $courseModuleData      = $courseModule->getListing(['status'=>'1']);
-        return view('admin.admission.edit',compact('courseModuleData'));
+        return view('admin.admission.edit',compact('courseModuleData','admission'));
         // return $this->__formUiGeneration($request, $id);
     }
 
@@ -174,9 +179,78 @@ class AdmissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        return $this->__formPost($request, $id);
+        // dd($request->all());
+        // return $this->__formPost($request);
+
+        $validationRules = [
+            'name'          => 'required',
+            'f_name'          => 'required',
+            'dob'          => 'required',
+            'doa'          => 'required',
+            'course_name'          => 'required',
+            'c_code'          => 'required',
+        ];
+
+        $this->validate($request, $validationRules);
+
+        $input      = $request->all();
+        $courseModule       = new CourseModule();
+        $courseModuleRow=$courseModule->getListing(['id'=>$input['course_name']]);
+    
+        $userId     	=       \Auth::user()->id;
+        $user       = new User();
+        $userRow=$user->getListing(['id'=>$userId]);
+
+        $student_info_id= $input['student_info_id'];
+        $student_edu_id= $input['student_edu_id'];
+      
+        $admission_info = [
+			"name" => $input['name'],
+			"f_name" => $input['f_name'],
+            "dob"=>$input['dob'],
+            "doa"=>$input['doa'],
+            "course_name"=> $courseModuleRow->name,
+            "c_code"=>$input['c_code'],
+            "address"=>$input['address'],
+            "po"=>$input['po'],
+            "ps"=>$input['ps'],
+            "dis"=>$input['dis'],
+            "pin"=>$input['pin'],
+            "l_no"=>$input['l_no'],
+            "m_no"=>$input['m_no'],
+            "religion"=>$input['religion'],
+            "cast"=>$input['cast'],
+            "admission_form_number"=>$input['admission_form_number'],
+            "total_fees"=>$input['total_fees'],
+            "course_id"=>$input['course_name']
+		];
+        $return_data = Admission::where('id',$student_info_id)->update($admission_info);
+    
+        $admission_details = [
+			"exam" => $input['exam'],
+            "year"=>$input['year'],
+            "board"=>$input['board'],
+            "marks"=>$input['marks'],
+            "10th_year"=>$input['10th_year'],
+            "10th_board"=>$input['10th_board'],
+            "10th_marks"=>$input['10th_marks'],
+            "12th_year"=>$input['12th_year'],
+            "12th_board"=>$input['12th_board'],
+            "12th_marks"=>$input['12th_marks'],
+            "g_year"=>$input['g_year'],
+            "g_board"=>$input['g_board'],
+            "g_marks"=>$input['g_marks'],
+            "p_year"=>$input['p_year'],
+            "p_board"=>$input['p_board'],
+            "p_marks"=>$input['p_marks']
+		];
+
+		AdmissionDetails::where('table_id',$student_edu_id)->update($admission_details);
+        return redirect()
+                ->route($this->_routePrefix . '.index')
+                ->with('success','Admission upadded successfully.');
     }
 
     /**
