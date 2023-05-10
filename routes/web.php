@@ -133,6 +133,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 
 Auth::routes(['verify' => true]);
 Route::get('/', 'App\Http\Controllers\HomeController@home')->name('home');
+Route::get('/contact', 'App\Http\Controllers\HomeController@contact')->name('contact');
+Route::get('/about-us', 'App\Http\Controllers\HomeController@about_us')->name('about-us');
+Route::post('/save-contact', 'App\Http\Controllers\HomeController@save_contact')->name('save-contact');
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 });

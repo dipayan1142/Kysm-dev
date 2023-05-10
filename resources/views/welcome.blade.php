@@ -1,14 +1,7 @@
 @extends('front.layouts.app')
 @section('content')
 
-        <!-- LOADER -->
-        <div id="preloader">
-            <div class="loader">
-                <img src="{{asset('front/images/loader.gif')}}" alt="#" />
-            </div>
-        </div>
-        <!-- end loader -->
-        <!-- END LOADER -->
+
 
             <!-- Start Banner -->
     <div class="ulockd-home-slider">
