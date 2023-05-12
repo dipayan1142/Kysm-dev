@@ -64,7 +64,9 @@
           @if($permission['edit'])
           <a href="{{ route($routePrefix . '.edit', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="Edit">{!! \Config::get('settings.icon_edit') !!}</a>
           @endif
-          <a href="{{ route('admission.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="View Admission"><i class="fa fa-fw fa-eye"></i></a> 
+          <a href="{{ route('admission.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="View Admission"><i class="fa fa-fw fa-eye"></i></a>
+          
+          <a href="{{ route('payment_history.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="payment Add"><i class="fa fa-fw fa-bars"></i></a> 
           
           @if($permission['destroy'] )
             <a class="btn btn-outline-danger waves-effect" data-toggle="tooltip" title="" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" data-confirm-yes="event.preventDefault();

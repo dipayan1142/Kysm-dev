@@ -36,9 +36,9 @@
     <tbody>
       @if(count($data) != 0)
       @foreach ($data as $key => $val)
-      
+
       <tr>
-       
+        <td width="10%"><img src="{{ @$val->avatar['thumb'] }}" class="rounded-circle avatar-md" style="max-height: 70px;"></td>
       <td> {{ $val->name }}</td>
         <td>
         

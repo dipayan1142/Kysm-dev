@@ -4,54 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
 
-class Admission extends Model
+class PaymentHistory extends Model
 {
     use SoftDeletes;
 
-    protected $table    = 'student_info';
+    protected $table    = 'payment_history';
     
     protected $fillable = [
-        'c_id',
-        'name',
-        'f_name',
-        'dob',
-        'doa',
-        'course_name',
-        'c_code',
-        'address',
-        'po',
-        'ps',
-        'dis',
-        'pin',
-        'l_no',
-        'm_no',
-        'religion',
-        'cast',
-        's_id',
-        's_idn',
-        'course_id',
-        'admission_form_number',
-        'total_fees',
-        'status',
         
+        'note',
+        'amount',
+        'admission_id',
+        'status'
     ];
 
     protected $hidden = [
     	'updated_at',
-    	
+    	'deleted_at'
     ];
 
     public $statuses = [
         0=> [
             'id' => 0,
-            'name' => 'Inactive',
+            'name' => 'Disabled',
             'badge' => 'warning'
         ],
         1=> [
             'id' => 1,
-            'name' => 'Active',
+            'name' => 'Enabled',
             'badge' => 'success'
         ],
     ];
@@ -61,52 +42,36 @@ class Admission extends Model
     public function getFilters()
 	{
         $status         = \App\Helpers\Helper::makeSimpleArray($this->statuses, 'id,name');
-        $courseModule       = new CourseModule();
-        $courseM       = $courseModule->getListing(['status'=>'1'])
-            ->pluck('name', 'id')
-            ->all();
 		return [
-            'reset' => route('admission.index'),
+            'reset' => route('payment_history.index'),
 			'fields' => [
-				'name'          => [
-		            'type'      => 'text',
-		            'label'     => 'Name'
-		        ],
-		        'm_no'         => [
-		            'type'      => 'text',
-		            'label'     => 'Mobile No'
-		        ],
-		        'status'     => [
-                    'type'       => 'select',
-                    'label'      => 'Status',
-                    'attributes' => [
-                        'id' => 'select-status',
-                    ],
-                    'options'    => $status,
-                ],
+				// 'name'          => [
+		        //     'type'      => 'text',
+		        //     'label'     => 'Module Name'
+		        // ],
+		       
+		        // 'status'     => [
+                //     'type'       => 'select',
+                //     'label'      => 'Status',
+                //     'attributes' => [
+                //         'id' => 'select-status',
+                //     ],
+                //     'options'    => $status,
+                // ],
 			]
 		];
 	}
 
     public function getListing($srch_params = [], $offset = 0)
     {
-
-        $user       = \Auth::user();
-       
-
-        // dd($user);
-
         $listing = self::select(
-                $this->table . ".*","student_edu_info.exam","student_edu_info.year","student_edu_info.board","student_edu_info.marks","student_edu_info.10th_year as ten_year","student_edu_info.10th_board as ten_board","student_edu_info.10th_marks as ten_marks","student_edu_info.12th_year as tw_year","student_edu_info.12th_board as tw_board","student_edu_info.12th_marks as tw_marks","student_edu_info.g_year","student_edu_info.g_board","student_edu_info.g_marks","student_edu_info.p_year","student_edu_info.p_board","student_edu_info.p_marks","student_edu_info.table_id as student_edu_id"
-            )->leftJoin('student_edu_info', 'student_edu_info.student_info_id', '=', $this->table.'.id')
+                $this->table . ".*"
+            )
             ->when(isset($srch_params['with']), function ($q) use ($srch_params) {
 				return $q->with($srch_params['with']);
 			})
             ->when(isset($srch_params['name']), function($q) use($srch_params){
                 return $q->where($this->table . ".name", "LIKE", "%{$srch_params['name']}%");
-            })
-            ->when(isset($srch_params['m_no']), function($q) use($srch_params){
-                return $q->where($this->table . ".m_no", "LIKE", "%{$srch_params['m_no']}%");
             })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);
@@ -117,24 +82,13 @@ class Admission extends Model
                             ->first();
         }
 
-        if(isset($srch_params['tag_line'])){
-            return $listing->where($this->table . '.tag_line', '=', $srch_params['tag_line'])
-                            ->first();
-        }
-
-        if ($user->id !=1)
-        {
-            $listing->where($this->table . '.c_id', $user->username);
-        }
-
-   
         if(isset($srch_params['orderBy'])){
             $this->orderBy = \App\Helpers\Helper::manageOrderBy($srch_params['orderBy']);
             foreach ($this->orderBy as $key => $value) {
                 $listing->orderBy($key, $value);
             }
         } else {
-            $listing->orderBy($this->table . '.created_at', 'DESC');
+            $listing->orderBy($this->table . '.id', 'ASC');
         }
 
         if (isset($srch_params['get_sql']) && $srch_params['get_sql']) {

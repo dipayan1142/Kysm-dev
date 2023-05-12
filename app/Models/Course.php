@@ -33,6 +33,11 @@ class Course extends Model
     	
     ];
 
+    // for course
+	protected $appends = [
+		'course_image',
+	];
+
     public $statuses = [
         0=> [
             'id' => 0,
@@ -88,6 +93,19 @@ class Course extends Model
                 ],
 			]
 		];
+	}
+
+    public function getCourseAttribute()
+	{
+		return File::file($this->course_pic, 'no-profile.jpg');
+	}
+
+    
+	public function course_pic()
+	{
+		$entityType = isset(File::$fileType['course_picture']['type']) ? File::$fileType['course_picture']['type'] : 0;
+		return $this->hasOne('App\Models\File', 'entity_id', 'id')
+			->where('entity_type', $entityType);
 	}
 
     public function getListing($srch_params = [], $offset = 0)
@@ -150,6 +168,7 @@ class Course extends Model
 
     public function store($input = [], $id = 0, $request = null)
 	{
+        $avatar                     = [];
 		$data 						= null;
         if ($id) {
             $data = $this->getListing(['id' => $id]);
@@ -162,7 +181,7 @@ class Course extends Model
         } else {
             $data   = $this->create($input);
 		}
-		
+		$this->uploadCourse($data, $id, $request);
 		return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $data);
     }
     
@@ -180,4 +199,20 @@ class Course extends Model
 
 		return \App\Helpers\Helper::resp('Record has been successfully deleted.', 200, $data);
 	}
+
+    public function uploadCourse($data = [], $id = 0, $request = null)
+	{
+		$avatar = $data->course_pic;
+		$file   = \App\Models\File::upload($request, 'course_picture', 'course_picture', $data->id);
+
+		// if file has successfully uploaded
+		// and previous file exists, it will
+		// delete old file.
+		if ($file && $avatar) {
+			\App\Models\File::deleteFile($avatar, true);
+		}
+
+		return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $file);
+	}
+
 }

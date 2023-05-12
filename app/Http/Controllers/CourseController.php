@@ -205,6 +205,15 @@ class CourseController extends Controller
                         'required'  => true
                     ]
                 ],
+                'course_picture'           => [
+					'type'       => 'file',
+					'label'      => 'Course Image',
+					'value'      => isset($data->course_pic) ? $data->course_pic : [],
+					'attributes' => [
+						'cropper' => true,
+						'ratio'   => '200x200',
+					],
+				],
                 'about_course'        => [
                     'type'          => 'textarea',
                     'label'         => 'About Course',

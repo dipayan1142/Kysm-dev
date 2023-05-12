@@ -106,7 +106,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::get('create', 'App\Http\Controllers\AdmissionController@create')->name('admission.create');
 		Route::get('edit/{id}', 'App\Http\Controllers\AdmissionController@edit')->name('admission.edit');
 		Route::post('store', 'App\Http\Controllers\AdmissionController@store')->name('admission.store');
-		Route::patch('update/{id}', 'App\Http\Controllers\AdmissionController@update')->name('admission.update');
+		Route::post('update', 'App\Http\Controllers\AdmissionController@update')->name('admission.update');
 		Route::delete('destroy/{id}', 'App\Http\Controllers\AdmissionController@destroy')->name('admission.destroy');
 		Route::get('show/{id}', 'App\Http\Controllers\AdmissionController@show')->name('admission.show');
 	});
@@ -120,7 +120,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	Route::group(['prefix' => 'profile'], function () {
 		Route::get('index', 'App\Http\Controllers\ProfileController@index')->name('profile.index');
 		Route::get('create', 'App\Http\Controllers\ProfileController@create')->name('profile.create');
-		Route::post('store', 'App\Http\Controllers\ProfileController@store')->name('profile.store');
+		Route::patch('store', 'App\Http\Controllers\ProfileController@store')->name('profile.store');
+	});
+
+	Route::group(['prefix' => 'payment_history'], function () {
+		Route::get('index', 'App\Http\Controllers\PaymentController@index')->name('payment_history.index');
+		Route::get('show/{id}', 'App\Http\Controllers\PaymentController@show')->name('payment_history.show');
+		Route::get('create/{id}', 'App\Http\Controllers\PaymentController@create')->name('payment_history.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\PaymentController@edit')->name('payment_history.edit');
+		Route::post('store', 'App\Http\Controllers\PaymentController@store')->name('payment_history.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\PaymentController@update')->name('payment_history.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\PaymentController@destroy')->name('payment_history.destroy');
+	
 	});
 
 	Route::group(['prefix' => 'contact'], function () {

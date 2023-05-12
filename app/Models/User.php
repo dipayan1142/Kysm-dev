@@ -80,6 +80,7 @@ class User extends Authenticatable
 		'updated_at',
 		'deleted_at',
 		'profile_pic',
+		'banner_pic',
 		
 	];
 
@@ -95,6 +96,7 @@ class User extends Authenticatable
 	// for avatar
 	protected $appends = [
 		'avatar',
+		'banner_picture',
 		'full_name',
 	];
 
@@ -176,19 +178,21 @@ class User extends Authenticatable
 			->where('entity_type', $entityType);
 	}
 
-	/*public function getAppointmentAttribute() {
-			$appo = [];
-			foreach ($this->appointments as $key => $value) {
-				$appo[] = File::file($value);
-			}
-			return $appo;
+	public function getBannerAttribute() 
+	{
+		$banner = [];
+		foreach ($this->banner_pic as $key => $value) {
+			$banner[] = File::file($value);
 		}
+		return $banner;
+	}
 
-		public function appointments() {
-			return $this->hasMany('App\Models\File', 'entity_id', 'id')
+	public function banner_pic() 
+	{
+		return $this->hasMany('App\Models\File', 'entity_id', 'id')
 				->where('entity_type', 2);
-		}
-	*/
+	}
+	
 
 	public function verifyUser()
 	{
@@ -406,7 +410,8 @@ class User extends Authenticatable
 			}
 		}
 
-		// $this->uploadAvatar($data, $id, $request);
+		$this->uploadAvatar($data, $id, $request);
+		$this->uploadBanner($data, $id, $request);
 		
 		if(isset($input['delete_files'])) {
 			$entityType = isset(File::$fileType['user_avatar']['type']) ? File::$fileType['user_avatar']['type'] : 0;
@@ -495,6 +500,23 @@ class User extends Authenticatable
 			\App\Models\File::deleteFile($avatar, true);
 		}
 
+		return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $file);
+	}
+
+	public function uploadBanner($data = [], $id = 0, $request = null)
+	{
+		// dd($data,$id);
+		$banner_pic = $data->banner_pic;
+		$file   = \App\Models\File::upload($request, 'banner_picture', 'center_banner_picture', $data->id);
+
+		dd($file);
+		// if file has successfully uploaded
+		// and previous file exists, it will
+		// delete old file.
+		if ($file && $banner_pic) {
+			\App\Models\File::deleteFile($banner_pic, true);
+		}
+		dd($file);
 		return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $file);
 	}
 
