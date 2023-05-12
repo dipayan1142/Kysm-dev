@@ -52,6 +52,10 @@ class File extends Model {
 			'type'     => 2,
 			'location' => 'c',
 		],
+		'course_picture'         => [
+			'type'     => 3,
+			'location' => 'p',
+		],
 	];
 
 	/**

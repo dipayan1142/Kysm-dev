@@ -158,6 +158,10 @@ class PaymentController extends Controller
                     'attributes'    => [
                         'required'  => true
                     ]
+                ],
+                'note'      => [
+                    'type'          => 'textarea',
+                    'label'         => 'Note',
                 ]
             ],
         ];

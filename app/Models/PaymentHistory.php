@@ -13,7 +13,7 @@ class PaymentHistory extends Model
     
     protected $fillable = [
         
-        'name',
+        'note',
         'amount',
         'admission_id',
         'status'
@@ -45,19 +45,19 @@ class PaymentHistory extends Model
 		return [
             'reset' => route('payment_history.index'),
 			'fields' => [
-				'name'          => [
-		            'type'      => 'text',
-		            'label'     => 'Module Name'
-		        ],
+				// 'name'          => [
+		        //     'type'      => 'text',
+		        //     'label'     => 'Module Name'
+		        // ],
 		       
-		        'status'     => [
-                    'type'       => 'select',
-                    'label'      => 'Status',
-                    'attributes' => [
-                        'id' => 'select-status',
-                    ],
-                    'options'    => $status,
-                ],
+		        // 'status'     => [
+                //     'type'       => 'select',
+                //     'label'      => 'Status',
+                //     'attributes' => [
+                //         'id' => 'select-status',
+                //     ],
+                //     'options'    => $status,
+                // ],
 			]
 		];
 	}

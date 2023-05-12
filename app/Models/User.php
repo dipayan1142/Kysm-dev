@@ -410,7 +410,7 @@ class User extends Authenticatable
 			}
 		}
 
-		// $this->uploadAvatar($data, $id, $request);
+		$this->uploadAvatar($data, $id, $request);
 		$this->uploadBanner($data, $id, $request);
 		
 		if(isset($input['delete_files'])) {

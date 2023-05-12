@@ -14,9 +14,9 @@
   <table class="table table-condensed mh-200">
     <thead>
       <tr>
-       <th>Name {!! \App\Helpers\Helper::sort($routePrefix . '.index', 'name', $orderBy) !!}</th>
+       <th>Note</th>
        <th>Amount {!! \App\Helpers\Helper::sort($routePrefix . '.index', 'amount', $orderBy) !!}</th>
-       <th>Status {!! \App\Helpers\Helper::sort($routePrefix . '.index', 'status', $orderBy) !!}</th>
+       <th>Created At</th>
        @if($permission['edit'] || $permission['destroy'] || $permission['index'])
        <th width="15%" style="text-align: right;">Action</th>
        @endif
@@ -26,9 +26,9 @@
       @if(count($data) != 0)
         @foreach ($data as $key => $val)
         <tr>
-          <td>{{ $val->name }}</td>
+          <td>{{ $val->note }}</td>
           <td>{{ $val->amount }}</td>
-          <td><span class="badge badge-pill badge-soft-{{ $val->statuses[$val->status]['badge'] }} font-size-12">{!! $val->statuses[$val->status]['name'] !!}</span></td>
+          <td>{{ \App\Helpers\Helper::showDate($val->created_at) }}</td>
           @if($permission['edit'] || $permission['destroy'] || $permission['index'])
           <td class="text-right">
             @if($permission['edit'])
