@@ -120,13 +120,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	Route::group(['prefix' => 'profile'], function () {
 		Route::get('index', 'App\Http\Controllers\ProfileController@index')->name('profile.index');
 		Route::get('create', 'App\Http\Controllers\ProfileController@create')->name('profile.create');
-		Route::post('store', 'App\Http\Controllers\ProfileController@store')->name('profile.store');
+		Route::patch('store', 'App\Http\Controllers\ProfileController@store')->name('profile.store');
 	});
 
 	Route::group(['prefix' => 'payment_history'], function () {
 		Route::get('index', 'App\Http\Controllers\PaymentController@index')->name('payment_history.index');
 		Route::get('show/{id}', 'App\Http\Controllers\PaymentController@show')->name('payment_history.show');
-		Route::get('create', 'App\Http\Controllers\PaymentController@create')->name('payment_history.create');
+		Route::get('create/{id}', 'App\Http\Controllers\PaymentController@create')->name('payment_history.create');
 		Route::get('edit/{id}', 'App\Http\Controllers\PaymentController@edit')->name('payment_history.edit');
 		Route::post('store', 'App\Http\Controllers\PaymentController@store')->name('payment_history.store');
 		Route::patch('update/{id}', 'App\Http\Controllers\PaymentController@update')->name('payment_history.update');

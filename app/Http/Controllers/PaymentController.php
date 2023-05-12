@@ -42,9 +42,10 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(Request $request,$id)
     {
-        return $this->__formUiGeneration($request);
+       
+        return $this->__formUiGeneration($request,$id);
     }
 
     /**
@@ -130,17 +131,27 @@ class PaymentController extends Controller
      */
     protected function __formUiGeneration(Request $request, $id = '')
     {
-        $response = $this->initUIGeneration($id);
+        $admission_id = (isset($id))? $id : '';
+        $response = $this->initUIGeneration();
         if($response) {
             return $response;
         }
 
+ 
         extract($this->_data);
         $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
         $form = [
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
             'fields'     => [
+                'admission_id'      => [
+                    'type'          => 'hidden',
+                    'label'         => 'admission id',
+                    'value'         => $admission_id,
+                    'attributes'    => [
+                        'required'  => true,
+                    ]
+                ],
                 'amount'      => [
                     'type'          => 'number',
                     'label'         => 'Amount',
@@ -174,11 +185,11 @@ class PaymentController extends Controller
         
         if($response['status'] == 200){
             return redirect()
-                ->route($this->_routePrefix . '.index')
+                ->route($this->_routePrefix . '.show',$response['data']->admission_id)
                 ->with('success',  $response['message']);
         } else {
             return redirect()
-                    ->route($this->_routePrefix . '.index')
+                    ->route($this->_routePrefix .'.show',$response['data']->admission_id)
                     ->with('error', $response['message']);
         }
     }

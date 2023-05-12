@@ -281,15 +281,15 @@ class UserController extends Controller {
 				// 	'type'  => 'password',
 				// 	'label' => 'Confirm Password',
 				// ],
-				// 'avatar'           => [
-				// 	'type'       => 'file',
-				// 	'label'      => 'Avatar',
-				// 	'value'      => isset($data->profile_pic) ? $data->profile_pic : [],
-				// 	'attributes' => [
-				// 		'cropper' => true,
-				// 		'ratio'   => '200x200',
-				// 	],
-				// ],
+				'avatar'           => [
+					'type'       => 'file',
+					'label'      => 'Avatar',
+					'value'      => isset($data->profile_pic) ? $data->profile_pic : [],
+					'attributes' => [
+						'cropper' => true,
+						'ratio'   => '200x200',
+					],
+				],
 				// 'appointments[]' => [
     //                 'type'          => 'file',
     //                 'label'         => 'Attachments',

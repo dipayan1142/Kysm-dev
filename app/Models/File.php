@@ -48,9 +48,9 @@ class File extends Model {
 			'type'     => 1,
 			'location' => 'u',
 		],
-		'appointment'         => [
+		'center_banner_picture'         => [
 			'type'     => 2,
-			'location' => 'a',
+			'location' => 'c',
 		],
 	];
 

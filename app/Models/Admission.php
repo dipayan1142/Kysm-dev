@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 class Admission extends Model
 {
@@ -65,7 +66,7 @@ class Admission extends Model
             ->pluck('name', 'id')
             ->all();
 		return [
-            'reset' => route('course.index'),
+            'reset' => route('admission.index'),
 			'fields' => [
 				'name'          => [
 		            'type'      => 'text',
@@ -89,20 +90,23 @@ class Admission extends Model
 
     public function getListing($srch_params = [], $offset = 0)
     {
+
+        $user       = \Auth::user();
+       
+
+        // dd($user);
+
         $listing = self::select(
                 $this->table . ".*","student_edu_info.exam","student_edu_info.year","student_edu_info.board","student_edu_info.marks","student_edu_info.10th_year as ten_year","student_edu_info.10th_board as ten_board","student_edu_info.10th_marks as ten_marks","student_edu_info.12th_year as tw_year","student_edu_info.12th_board as tw_board","student_edu_info.12th_marks as tw_marks","student_edu_info.g_year","student_edu_info.g_board","student_edu_info.g_marks","student_edu_info.p_year","student_edu_info.p_board","student_edu_info.p_marks","student_edu_info.table_id as student_edu_id"
             )->leftJoin('student_edu_info', 'student_edu_info.student_info_id', '=', $this->table.'.id')
             ->when(isset($srch_params['with']), function ($q) use ($srch_params) {
 				return $q->with($srch_params['with']);
 			})
-            ->when(isset($srch_params['course_name']), function($q) use($srch_params){
-                return $q->where($this->table . ".course_name", "LIKE", "%{$srch_params['course_name']}%");
+            ->when(isset($srch_params['name']), function($q) use($srch_params){
+                return $q->where($this->table . ".name", "LIKE", "%{$srch_params['name']}%");
             })
-            ->when(isset($srch_params['course_title']), function($q) use($srch_params){
-                return $q->where($this->table . ".course_title", "LIKE", "%{$srch_params['course_title']}%");
-            })
-            ->when(isset($srch_params['module_id']), function($q) use($srch_params){
-                return $q->where($this->table . ".module_id", "=",$srch_params['module_id']);
+            ->when(isset($srch_params['m_no']), function($q) use($srch_params){
+                return $q->where($this->table . ".m_no", "LIKE", "%{$srch_params['m_no']}%");
             })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);
@@ -116,6 +120,11 @@ class Admission extends Model
         if(isset($srch_params['tag_line'])){
             return $listing->where($this->table . '.tag_line', '=', $srch_params['tag_line'])
                             ->first();
+        }
+
+        if ($user->id !=1)
+        {
+            $listing->where($this->table . '.c_id', $user->username);
         }
 
    

@@ -54,9 +54,9 @@ class ProfileController extends Controller
      */
     protected function __formUiGeneration(Request $request, $id = '')
     {
-        $id=Auth::user()->id;
+        $user_id=Auth::user()->id;
         $selectmodule=[];
-        $response = $this->initUIGeneration($id);
+        $response = $this->initUIGeneration($user_id);
        
 
         if($response) {
@@ -76,7 +76,7 @@ class ProfileController extends Controller
             ->pluck('name', 'id')
             ->all();
 
-        $selectmodule=DB::table('center_permission_modules')->where('center_id', $id)->pluck('module_id')->all();
+        $selectmodule=DB::table('center_permission_modules')->where('center_id', $user_id)->pluck('module_id')->all();
 
         // dd($selectmodule);
      
@@ -122,11 +122,14 @@ class ProfileController extends Controller
 					'attributes' => ['required' => true],
 				    
 				],
-                'profile_picture'       => [
+                'avatar'           => [
 					'type'       => 'file',
-					'label'      => 'Profile Picture',
-			
-				    
+					'label'      => 'Avatar',
+					'value'      => isset($data->profile_pic) ? $data->profile_pic : [],
+					'attributes' => [
+						'cropper' => true,
+						'ratio'   => '200x200',
+					],
 				],
                 'address'       => [
 					'type'       => 'text',
@@ -146,11 +149,12 @@ class ProfileController extends Controller
 				
 				    
 				],
-                'banner_picture'       => [
-					'type'       => 'file',
-					'label'      => 'Banner Picture',
-                    'attributes' => ['multiple' => true],
-				    
+               
+                'banner_picture[]' => [
+                    'type'          => 'file',
+                    'label'         => 'banner_picture',
+                    'attributes'    => ['multiple' => true],
+                    'value'         => isset($data->banner_picture) ? $data->banner_picture : []
 				],
 				
 			],
@@ -169,42 +173,46 @@ class ProfileController extends Controller
     protected function __formPost(Request $request, $id = '')
     {
         $validationRules = [
-            'current_password'   => 'required',
-            'new_password'       => 'required',
-            'confirm_password'   => 'required'
+            'center_name'   => 'required',
+            'username'       => 'required',
+            'email'   => 'required',
+            'phone'   => 'required',
+            'center_incharge_name'   => 'required'
         ];
 
         $this->validate($request, $validationRules);
 
-        $input      = $request->all();
+        $isOwnAcc = true;
+		//
+		// if this is not own account, it will
+		// require role.
+		//
+		if (Auth::user()->id != $id) {
+			$isOwnAcc = false;
+		}
+		//echo "<pre/>"; print_r($request->all()); die;
+        $id=Auth::user()->id;
+		$input    = $request->all();
+		
+		$response = $this->_model->store($input, $id, $request);
 
-        $srch_params['id'] =       \Auth::user()->id;
-        $srch_params['single_record'] = true ;
-        $user_row=$this->_model->getListing($srch_params, $this->_offset);
-        
-        if(Hash::check($input['current_password'],$user_row->password))
+		if ($response['status'] == 200) {
+			if (!$isOwnAcc) {
+				return redirect()
+					->route($this->_routePrefix . '.create')
+					->with('success', $response['message']);
+			} else {
+				return redirect()
+					->route($this->_routePrefix . '.create', $id)
+					->with('success', $response['message']);
+			}
+		} 
+        else 
         {
-            // dd($user_row);
-            $input['password'] = Hash::make($input['current_password']);
-
-            // $data = \Auth::user();
-			// $data->update($input);
-
-            // $user_row->password=$input['password'];
-            // $user_row->update($input);
-            $this->_model::where('id',$srch_params['id'])->update(['password'=>$input['password']]);
-        
-            return redirect()
-                    ->route($this->_routePrefix . '.create')
-                    ->with('success','Password change successfully.');
-           
-        }
-        else
-        {
-            return redirect()
-                    ->route($this->_routePrefix . '.create')
-                    ->with('error', 'Your current password is incorrect.');
-        } 
+			return redirect()
+				->route($this->_routePrefix . '.index')
+				->with('error', $response['message']);
+		}
     }
 
 }
