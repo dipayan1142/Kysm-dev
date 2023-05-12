@@ -30,7 +30,11 @@
         <div class="row">
           <div class="col-lg-7 mb-5">
             <div class="contact-form">
-              <div id="success"></div>
+              <div id="success"> 
+                 @if(Session::has('message'))
+                    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                 @endif
+                </div>
               
               <form method="post" action="{{url('save-contact')}}"  enctype="multipart/form-data">
               @csrf

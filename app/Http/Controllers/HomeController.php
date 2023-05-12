@@ -66,7 +66,7 @@ class HomeController extends Controller
 
 		];
 		if (ContactUs::create($insert)) {
-            Session::flash('message', 'Message successfully');
+            Session::flash('message', 'Message send successfully');
             return redirect('/contact');
         } else {
             Session::flash('message', 'Failed! Something Went Wrong');
