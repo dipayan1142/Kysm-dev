@@ -14,6 +14,7 @@ class Admission extends Model
     
     protected $fillable = [
         'c_id',
+        'center_id',
         'name',
         'f_name',
         'dob',
@@ -61,10 +62,25 @@ class Admission extends Model
     public function getFilters()
 	{
         $status         = \App\Helpers\Helper::makeSimpleArray($this->statuses, 'id,name');
-        $courseModule       = new CourseModule();
-        $courseM       = $courseModule->getListing(['status'=>'1'])
-            ->pluck('name', 'id')
-            ->all();
+        $centerArr=[];
+        
+        $userId     	=       \Auth::user()->id;
+        $getRole = \App\Helpers\Helper::get_role($userId);
+        
+        if($getRole==1){
+        $getCenter = DB::table('users')
+            ->select('users.id','users.center_name')
+            ->leftJoin('user_roles', 'user_roles.user_id', '=', 'users.id')
+            ->where('user_roles.role_id', '2')
+            ->where('users.status', '1')
+            ->whereNull('users.deleted_at')
+            ->orderBy('users.created_at', 'DESC')
+            ->get();
+            foreach ($getCenter as $key => $cVal) {
+               $centerArr[$cVal->id]=$cVal->center_name;
+            }
+        }
+
 		return [
             'reset' => route('admission.index'),
 			'fields' => [
@@ -76,6 +92,14 @@ class Admission extends Model
 		            'type'      => 'text',
 		            'label'     => 'Mobile No'
 		        ],
+                'center_id'     => [
+                    'type'       => 'select',
+                    'label'      => 'Center',
+                    'attributes' => [
+                        'id' => 'select-center_id',
+                    ],
+                    'options'    => $centerArr,
+                ],
 		        'status'     => [
                     'type'       => 'select',
                     'label'      => 'Status',
@@ -107,6 +131,9 @@ class Admission extends Model
             })
             ->when(isset($srch_params['m_no']), function($q) use($srch_params){
                 return $q->where($this->table . ".m_no", "LIKE", "%{$srch_params['m_no']}%");
+            })
+            ->when(isset($srch_params['center_id']), function($q) use($srch_params){
+                return $q->where($this->table . ".center_id", $srch_params['center_id']);
             })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);
@@ -155,6 +182,8 @@ class Admission extends Model
 
     public function store($input = [], $id = 0, $request = null)
 	{
+        
+      
 		$data 						= null;
         if ($id) {
             $data = $this->getListing(['id' => $id]);

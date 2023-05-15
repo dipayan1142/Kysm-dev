@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
+use DB;
 class Helper
 {
 
@@ -571,5 +571,15 @@ class Helper
 		}
 
 		return false;
+	}
+
+	public static function get_role($user_id)
+	{
+		$getRole = DB::table('user_roles')
+        ->select('user_roles.role_id')
+        ->where('user_roles.user_id', $user_id)
+        ->first();
+
+		return $getRole->role_id;
 	}
 }

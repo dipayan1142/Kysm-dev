@@ -85,6 +85,7 @@ class AdmissionController extends Controller
       
         $admission_info = [
 			"c_id" =>$userRow->username,
+			"center_id" =>$userId,
 			"name" => $input['name'],
 			"f_name" => $input['f_name'],
             "dob"=>$input['dob'],
@@ -106,6 +107,7 @@ class AdmissionController extends Controller
             "s_idn"=>1111,
             "course_id"=>$input['course_name']
 		];
+     
         $return_data = Admission::create($admission_info);
        
         
