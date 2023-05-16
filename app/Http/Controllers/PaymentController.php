@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentHistory;
-
+use DB;
 class PaymentController extends Controller
 {
     public function __construct($parameters = array())
@@ -74,8 +74,23 @@ class PaymentController extends Controller
         $this->_data['admission_id']     	=    $id;
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;
-        // $this->_data['filters']             = $this->_model->getFilters();
-        // dd($this->_data);
+       
+        $getStudent = DB::table('student_info')
+        ->select('*')
+        ->where('id', $id)
+        ->first();
+        $this->_data['student_info']=$getStudent;
+
+        $getPayment = DB::table('payment_history')
+        ->select('*')
+        ->where('admission_id', $id)
+        ->get();
+        $duefees=0;
+       foreach ($getPayment as $key => $val) {
+            $duefees=$duefees+$val->amount;
+       }
+       $this->_data['duefees']=$duefees;
+
         return view('admin.' . $this->_routePrefix . '.index', $this->_data);
     }
 
