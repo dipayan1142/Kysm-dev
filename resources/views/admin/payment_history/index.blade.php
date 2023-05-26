@@ -1,5 +1,5 @@
 @php ($headerOption = [
-  'title' => $module,
+  'title' => $module.' of '.$student_info->name, 
   'header_buttons' => [
     ($permission['create'] ? '<a class="btn btn-primary waves-effect" href="'. route($routePrefix . '.create',$admission_id) .'" data-toggle="tooltip" data-original-title="Add New Record">'. \Config::get('settings.icon_add') .' <span>Add New</span></a>' : '')
   ],
@@ -11,6 +11,7 @@
 
 @section('content')
 <div class="table-responsive">
+  <div><b>Total Fees :</b> {{$student_info->total_fees}}  <b>Due Fees :</b> {{$student_info->total_fees-$duefees}}</div>
   <table class="table table-condensed mh-200">
     <thead>
       <tr>

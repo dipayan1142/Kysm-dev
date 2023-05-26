@@ -237,6 +237,14 @@ class CourseController extends Controller
                     'label'         => 'Features',
                     
                 ],
+                'reg_fee'        => [
+                    'type'          => 'text',
+                    'label'         => 'Registration Fees',
+                    'attributes'    => [
+                        
+                        'required'  => true
+                    ]
+                ],
                 'is_propular_course'      => [
                     'type'          => 'select',
                     'label'         => 'Is Propular Course',

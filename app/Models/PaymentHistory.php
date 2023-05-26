@@ -64,6 +64,7 @@ class PaymentHistory extends Model
 
     public function getListing($srch_params = [], $offset = 0)
     {
+        
         $listing = self::select(
                 $this->table . ".*"
             )
@@ -75,12 +76,15 @@ class PaymentHistory extends Model
             })
             ->when(isset($srch_params['status']), function($q) use($srch_params){
                 return $q->where($this->table . '.status', '=', $srch_params['status']);
+            })
+            ->when(isset($srch_params['admission_id']), function($q) use($srch_params){
+                return $q->where($this->table . '.admission_id', '=', $srch_params['admission_id']);
             });
 
-        if(isset($srch_params['id'])){
-            return $listing->where($this->table . '.id', '=', $srch_params['id'])
-                            ->first();
-        }
+            if(isset($srch_params['id'])){
+                return $listing->where($this->table . '.id', '=', $srch_params['id'])
+                                ->first();
+            }
 
         if(isset($srch_params['orderBy'])){
             $this->orderBy = \App\Helpers\Helper::manageOrderBy($srch_params['orderBy']);
