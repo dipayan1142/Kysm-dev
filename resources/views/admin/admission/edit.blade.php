@@ -203,7 +203,13 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="year" id="year"  value="{{$admission->year}}">
+        
+          <select class="form-control" name="year" id="year">
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}" {{ $admission->g_year==$i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -215,7 +221,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="marks" id="marks"  value="{{$admission->marks}}">
+        <input type="text" class="form-control" name="marks" id="marks"  value="{{$admission->marks}}">
       </div>
     </div>
 
@@ -225,7 +231,15 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="10th_year" id="10th_year"  value="{{$admission->ten_year}}">
+        
+
+          <select class="form-control" name="10th_year" id="10th_year">
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}" {{ $admission->g_year==$i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor;
+           
+          </select>
+          
         </div>
       </div>
       <div class="col-3">
@@ -237,7 +251,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="10th_marks" id="10th_marks" value="{{$admission->ten_marks}}">
+        <input type="text" class="form-control" name="10th_marks" id="10th_marks" value="{{$admission->ten_marks}}">
       </div>
     </div>
 
@@ -247,7 +261,14 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="12th_year" id="12th_year"  value="{{$admission->tw_year}}">
+         
+
+          <select class="form-control" name="12th_year" id="12th_year">
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}" {{ $admission->g_year==$i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -259,7 +280,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="12th_marks" id="12th_marks" value="{{$admission->tw_marks}}">
+        <input type="text" class="form-control" name="12th_marks" id="12th_marks" value="{{$admission->tw_marks}}">
       </div>
     </div>
 
@@ -269,7 +290,12 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="g_year" id="g_year"  value="{{$admission->g_year}}">
+          <select class="form-control" name="g_year" id="g_year">
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}" {{ $admission->g_year==$i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -287,7 +313,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="g_marks" id="g_marks" value="{{$admission->g_marks}}">
+        <input type="text" class="form-control" name="g_marks" id="g_marks" value="{{$admission->g_marks}}">
       </div>
     </div>
 
@@ -297,7 +323,12 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="p_year" id="p_year" value="{{$admission->p_year}}">
+          <select class="form-control" name="p_year" id="p_year">
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}" {{ $admission->g_year==$i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -315,7 +346,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="p_marks" id="p_marks"  value="{{$admission->p_marks}}">
+        <input type="text" class="form-control" name="p_marks" id="p_marks"  value="{{$admission->p_marks}}">
       </div>
     </div>
 

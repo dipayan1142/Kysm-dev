@@ -9,6 +9,7 @@ use App\Models\CourseModule;
 use App\Models\Admission;
 use App\Models\AdmissionDetails;
 use App\Models\User;
+use DB;
 class AdmissionController extends Controller
 {
     public function __construct($parameters = array())
@@ -27,7 +28,6 @@ class AdmissionController extends Controller
      */
     public function index(Request $request)
     {
-       
         $this->initIndex();
         $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'AdmissionController');
         $srch_params                        = $request->all();
@@ -82,7 +82,37 @@ class AdmissionController extends Controller
         $user       = new User();
         $userRow=$user->getListing(['id'=>$userId]);
 
-      
+        $row_data = DB::table('student_unique_number')->where('id', 1)->first();
+        $student_unique_number = [
+			"number" => $row_data->number+1
+		];
+        DB::table('student_unique_number')->where('id',1)->update($student_unique_number);
+        $frist_four = substr($userRow->username, 0,4);
+        $year=DATE("Y");
+        $total_number='';
+
+        $ad_nu = Admission::where('c_id',$userRow->username)->count();
+        $length=strlen($row_data->number);
+        $ad_nu=$ad_nu+1;
+        if($length==1)
+        {
+            $total_number="0000".$row_data->number;
+        }
+        elseif($length==2)
+        {
+            $total_number="000".$row_data->number;
+        }
+        elseif($length==3)
+        {
+            $total_number="00".$row_data->number;
+        }
+        else
+        {
+            $total_number="0".$row_data->number;
+        }
+        
+        $admission_s_id=$frist_four.'-'.$year.'-'.$ad_nu.'/'.$total_number;
+        
         $admission_info = [
 			"c_id" =>$userRow->username,
 			"center_id" =>$userId,
@@ -103,13 +133,12 @@ class AdmissionController extends Controller
             "cast"=>$input['cast'],
             "admission_form_number"=>$input['admission_form_number'],
             "total_fees"=>$input['total_fees'],
-            "s_id"=>"abc",
-            "s_idn"=>1111,
+            "s_id"=>$admission_s_id,
+            "s_idn"=>$row_data->number,
             "course_id"=>$input['course_name']
 		];
      
         $return_data = Admission::create($admission_info);
-       
         
         $admission_details = [
 			"c_id" =>$userRow->username,
@@ -139,6 +168,8 @@ class AdmissionController extends Controller
                 ->with('success','Admission added successfully.');
         
     }
+
+   
 
     /**
      * Display the specified resource.

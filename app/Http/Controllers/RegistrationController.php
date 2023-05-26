@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Course;
+use App\Models\Registration;
 use App\Models\CourseModule;
-class CourseController extends Controller
+
+class RegistrationController extends Controller
 {
     public function __construct($parameters = array())
     {
         parent::__construct($parameters);
         
-        $this->_module      = 'Course';
-        $this->_routePrefix = 'course';
-        $this->_model       = new Course();
+        $this->_module      = 'Registration';
+        $this->_routePrefix = 'registration';
+        $this->_model       = new Registration();
     }
 
     /**
@@ -150,6 +151,31 @@ class CourseController extends Controller
             'back_route' => route($this->_routePrefix . '.index'),
             
             'fields'     => [
+
+                'registration_number'      => [
+                    'type'          => 'text',
+                    'label'         => 'Registration Number',
+                    'attributes'    => [
+                    
+                        'required'  => true
+                    ]
+                ],
+                
+                'name'      => [
+                    'type'          => 'text',
+                    'label'         => 'Name',
+                    'attributes'    => [
+                    
+                        'required'  => true
+                    ]
+                ],
+                'father_name'      => [
+                    'type'          => 'text',
+                    'label'         => 'Father Name',
+                    'attributes'    => [
+                        'required'  => true
+                    ]
+                ],
                 'module_id'      => [
                     'type'          => 'select',
                     'label'         => 'Select Module',
@@ -160,93 +186,17 @@ class CourseController extends Controller
                         'required'  => true
                     ]
                 ],
-                'course_name'      => [
-                    'type'          => 'text',
-                    'label'         => 'Course Name',
-                    'attributes'    => [
-                    
-                        'required'  => true
-                    ]
-                ],
-                'course_title'      => [
-                    'type'          => 'text',
-                    'label'         => 'Course Title',
-                    'attributes'    => [
-                        'required'  => true
-                    ]
-                ],
-                'tag_line'        => [
-                    'type'          => 'text',
-                    'label'         => 'Tag Line',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'short_description'        => [
-                    'type'          => 'text',
-                    'label'         => 'Short Description',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'duration'        => [
-                    'type'          => 'text',
-                    'label'         => 'Duration',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'eligibility'        => [
-                    'type'          => 'text',
-                    'label'         => 'Eligibility',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'availibity'        => [
-                    'type'          => 'text',
-                    'label'         => 'Availibity',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'course_picture'           => [
-					'type'       => 'file',
-					'label'      => 'Course Image',
-					'value'      => isset($data->course_pic) ? $data->course_pic : [],
-					'attributes' => [
-						'cropper' => true,
-						'ratio'   => '200x200',
-					],
-				],
-                'about_course'        => [
-                    'type'          => 'textarea',
-                    'label'         => 'About Course',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'key_features'        => [
-                    'type'          => 'textarea',
-                    'label'         => 'Features',
-                    
-                ],
-                'is_propular_course'      => [
+                'course'      => [
                     'type'          => 'select',
-                    'label'         => 'Is Propular Course',
-                    'options'       => $courseArOption,
-                    'value'         => isset($data->is_propular_course) ? $data->is_propular_course : 0,
+                    'label'         => 'Select Course',
+                    'options'       => $courseM,
+                    'value'         => isset($data->module_id) ? $data->module_id : 1,
                     'attributes'    => [
                         
                         'required'  => true
                     ]
                 ],
+               
 
                 'status'            => [
                     'type'          => 'radio',

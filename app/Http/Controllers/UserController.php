@@ -25,7 +25,8 @@ class UserController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(Request $request) {
+	public function index(Request $request) 
+	{
 		$this->initIndex();
 
 		$user                    = \Auth::user();
@@ -134,7 +135,6 @@ class UserController extends Controller {
 	 */
 	public function edit(Request $request, $id) 
 	{
-
 		return $this->__formUiGeneration($request, $id);
 	}
 
@@ -146,6 +146,7 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(UserRequest $request, $id) {
+		
 		return $this->__formPost($request, $id);
 	}
 
@@ -175,7 +176,8 @@ class UserController extends Controller {
 	 * @param  string $id [description]
 	 * @return [type]     [description]
 	 */
-	protected function __formUiGeneration(Request $request, $id = '') {
+	protected function __formUiGeneration(Request $request, $id = '') 
+	{
 		$roles      = [];
 		$userRoles  = [];
 		$ownAccount = true;
@@ -183,7 +185,8 @@ class UserController extends Controller {
 		$selectmodule=[];
 		$this->initUIGeneration($id, false);
 		extract($this->_data);
-		if ($id) {
+		if ($id) 
+		{
 			$data = $this->_model->getListing([
 				'id'              => $id,
 				'id_greater_than' => \Auth::user()->id,
@@ -205,7 +208,8 @@ class UserController extends Controller {
 			
 		}
 
-		if (Auth::user()->id != $id) {
+		if (Auth::user()->id != $id) 
+		{
 			
 			$ownAccount  = false;
 			$roleModel   = new \App\Models\Role();
@@ -223,6 +227,7 @@ class UserController extends Controller {
             ->pluck('name', 'id')
             ->all();
 		
+			
 		$form = [
 			'route'      		=> $this->_routePrefix . ($id ? '.update' : '.store'),
 			'back_route' 		=> route($this->_routePrefix . '.index'),
@@ -234,7 +239,6 @@ class UserController extends Controller {
 					'attributes' => ['required' => true],
 				    
 				],
-
 				'username'             => [
 				    'type'       => 'text',
 				    'label'      => 'User ID',
@@ -291,10 +295,10 @@ class UserController extends Controller {
 					],
 				],
 				// 'appointments[]' => [
-    //                 'type'          => 'file',
-    //                 'label'         => 'Attachments',
-    //                 'attributes'    => ['multiple' => true],
-    //                 'value'         => isset($data->appointment) ? $data->appointment : []
+					//                 'type'          => 'file',
+					//                 'label'         => 'Attachments',
+					//                 'attributes'    => ['multiple' => true],
+					//                 'value'         => isset($data->appointment) ? $data->appointment : []
 				// ],
 				'module_id'          => [
 					'type'       => 'checkbox',
@@ -318,7 +322,9 @@ class UserController extends Controller {
 			],
 		];
 
-		if ($ownAccount) {
+		
+		if ($ownAccount) 
+		{
 			unset($form['back_route']);
 			//unset($form['fields']['role_id']);
 			unset($form['fields']['status']);
@@ -339,7 +345,8 @@ class UserController extends Controller {
 	 * @param  string  $id      [description]
 	 * @return [type]           [description]
 	 */
-	protected function __formPost(UserRequest $request, $id = 0) {
+	protected function __formPost(UserRequest $request, $id = 0) 
+	{
 		$isOwnAcc = true;
 		//
 		// if this is not own account, it will
@@ -353,7 +360,8 @@ class UserController extends Controller {
 		
 		$response = $this->_model->store($input, $id, $request);
 
-		if ($response['status'] == 200) {
+		if ($response['status'] == 200) 
+		{
 			if (!$isOwnAcc) {
 				return redirect()
 					->route($this->_routePrefix . '.index')

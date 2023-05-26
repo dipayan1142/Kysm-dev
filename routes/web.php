@@ -139,6 +139,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::delete('destroy/{id}', 'App\Http\Controllers\ContactusController@destroy')->name('contact.destroy');
 	});
 
+	Route::group(['prefix' => 'transaction'], function () {
+		Route::get('index', 'App\Http\Controllers\TransactionController@index')->name('transaction.index');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\TransactionController@destroy')->name('transaction.destroy');
+	});
+
+	Route::group(['prefix' => 'registration'], function () {
+		Route::get('index', 'App\Http\Controllers\RegistrationController@index')->name('registration.index');
+		Route::get('create', 'App\Http\Controllers\RegistrationController@create')->name('registration.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\RegistrationController@edit')->name('registration.edit');
+		Route::post('store', 'App\Http\Controllers\RegistrationController@store')->name('registration.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\RegistrationController@update')->name('registration.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\RegistrationController@destroy')->name('registration.destroy');
+	});
+
 
 });
 
