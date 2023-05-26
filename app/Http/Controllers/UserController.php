@@ -11,7 +11,8 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use DB;
-class UserController extends Controller {
+class UserController extends Controller 
+{
 	public function __construct($parameters = array()) {
 		parent::__construct($parameters);
 
