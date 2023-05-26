@@ -202,7 +202,14 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="year" id="year"  placeholder="Year">
+          
+          <select class="form-control" name="year" id="year">
+            <option value="">-- Select Year --</option>
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}">{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -214,7 +221,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="marks" id="marks"  placeholder="% Of Mark">
+        <input type="text" class="form-control" name="marks" id="marks"  placeholder="% Of Mark">
       </div>
     </div>
 
@@ -224,7 +231,14 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="10th_year" id="10th_year"  placeholder="Year">
+         
+          <select class="form-control" name="10th_year" id="10th_year">
+            <option value="">-- Select Year --</option>
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}">{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -236,7 +250,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="10th_marks" id="10th_marks"  placeholder="% Of Mark">
+        <input type="text" class="form-control" name="10th_marks" id="10th_marks"  placeholder="% Of Mark">
       </div>
     </div>
 
@@ -246,7 +260,14 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="12th_year" id="12th_year"  placeholder="Year">
+      
+          <select class="form-control" name="12th_year" id="12th_year">
+            <option value="">-- Select Year --</option>
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}">{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -258,7 +279,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="12th_marks" id="12th_marks"  placeholder="% Of Mark">
+        <input type="text" class="form-control" name="12th_marks" id="12th_marks"  placeholder="% Of Mark">
       </div>
     </div>
 
@@ -268,7 +289,13 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="g_year" id="g_year"  placeholder="Year">
+          <select class="form-control" name="g_year" id="g_year">
+            <option value="">-- Select Year --</option>
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}">{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -286,7 +313,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="g_marks" id="g_marks"  placeholder="% Of Mark">
+        <input type="text" class="form-control" name="g_marks" id="g_marks"  placeholder="% Of Mark">
       </div>
     </div>
 
@@ -296,7 +323,13 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <input type="number" class="form-control" name="p_year" id="p_year"  placeholder="Year">
+          <select class="form-control" name="p_year" id="p_year">
+            <option value="">-- Select Year --</option>
+            @for($i=date('Y')-20; $i<=date('Y'); $i++)
+            <option value="{{ $i }}">{{ $i }}</option>
+            @endfor;
+           
+          </select>
         </div>
       </div>
       <div class="col-3">
@@ -314,7 +347,7 @@
         </select>
       </div>
       <div class="col-3">
-        <input type="number" class="form-control" name="p_marks" id="p_marks"  placeholder="% Of Mark">
+        <input type="text" class="form-control" name="p_marks" id="p_marks"  placeholder="% Of Mark">
       </div>
     </div>
 
@@ -329,3 +362,28 @@
 @include('admin.components.pagination')
 
 @endsection
+<script src="{{ asset('/administrator/assets/libs/jquery/jquery.min.js')}}"></script>
+<script>
+  $('#course_name').on('change',function(){
+    alert("hiii");
+    var search=$('#search').val();
+         
+      // jQuery.ajax({
+      //     url: '/admin/all-caller-list-ajax',
+      //     data: {'search': search},
+      //     type: "GET",
+      //     success: function(data){
+              
+      //         if(data)
+      //         {
+      //             $("#loading").hide();
+              
+      //                 $('#request').html(data);
+                  
+      //         }
+              
+                  
+      //         }
+      // });
+  });
+  </script>  

@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\CourseModule;
-class CourseController extends Controller
+use App\Models\Transactions;
+
+class TransactionController extends Controller
 {
     public function __construct($parameters = array())
     {
         parent::__construct($parameters);
         
-        $this->_module      = 'Course';
-        $this->_routePrefix = 'course';
-        $this->_model       = new Course();
+        $this->_module      = 'Transactions';
+        $this->_routePrefix = 'transaction';
+        $this->_model       = new Transactions();
     }
 
     /**
@@ -26,18 +26,13 @@ class CourseController extends Controller
     {
        
         $this->initIndex();
-        $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'CourseController');
+        $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'TransactionController');
+    
         $srch_params                        = $request->all();
-        $srch_params['with']                        = ['course_pic'];
-        
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;
         $this->_data['filters']             = $this->_model->getFilters();
-
-        // echo "<pre>";
-        // print_r($this->_data['data'] );
-        // die;
-        // $file_model=new App\Models\File();
+        // dd($this->_data['filters']);
         return view('admin.' . $this->_routePrefix . '.index', $this->_data)
             ->with('i', ($request->input('page', 1) - 1) * $this->_offset);
     }
@@ -83,7 +78,6 @@ class CourseController extends Controller
      */
     public function edit(Request $request, $id)
     {
-
         return $this->__formUiGeneration($request, $id);
     }
 
@@ -132,14 +126,12 @@ class CourseController extends Controller
         if($response) {
             return $response;
         }
-        
         $courseModule       = new CourseModule();
         $courseM       = $courseModule->getListing(['status'=>'1'])
             ->pluck('name', 'id')
             ->all();
 
         extract($this->_data);
-       
         $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
         $courseArOption=[
             '0'=>'NO',
@@ -215,15 +207,6 @@ class CourseController extends Controller
                         'required'  => true
                     ]
                 ],
-                'course_picture'           => [
-					'type'       => 'file',
-					'label'      => 'Course Image',
-					'value'      => isset($data->course_pic) ? $data->course_pic : [],
-					'attributes' => [
-						'cropper' => true,
-						'ratio'   => '200x200',
-					],
-				],
                 'about_course'        => [
                     'type'          => 'textarea',
                     'label'         => 'About Course',
@@ -236,14 +219,6 @@ class CourseController extends Controller
                     'type'          => 'textarea',
                     'label'         => 'Features',
                     
-                ],
-                'reg_fee'        => [
-                    'type'          => 'text',
-                    'label'         => 'Registration Fees',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
                 ],
                 'is_propular_course'      => [
                     'type'          => 'select',

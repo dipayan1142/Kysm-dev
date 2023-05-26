@@ -509,14 +509,12 @@ class User extends Authenticatable
 		$banner_pic = $data->banner_pic;
 		$file   = \App\Models\File::upload($request, 'banner_picture', 'center_banner_picture', $data->id);
 
-		dd($file);
 		// if file has successfully uploaded
 		// and previous file exists, it will
 		// delete old file.
 		if ($file && $banner_pic) {
 			\App\Models\File::deleteFile($banner_pic, true);
 		}
-		dd($file);
 		return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $file);
 	}
 
