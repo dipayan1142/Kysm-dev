@@ -35,7 +35,7 @@ class UserController extends Controller {
 		$this->_data['data']     = $this->_model->getListing($srch_params, $this->_offset);
 		$this->_data['filters']  = $this->_model->getFilters();
 		$this->_data['orderBy']  = $this->_model->orderBy;
-		//echo "<pre/>"; print_r($this->_data); die;
+		// echo "<pre/>"; dd($this->_data['data']); die;
 		return view('admin.' . $this->_routePrefix . '.index', $this->_data)
 			->with('i', ($request->input('page', 1) - 1) * $this->_offset);
 	}
@@ -362,16 +362,21 @@ class UserController extends Controller {
 
 		if ($response['status'] == 200) 
 		{
-			if (!$isOwnAcc) {
+			if (!$isOwnAcc) 
+			{
 				return redirect()
 					->route($this->_routePrefix . '.index')
 					->with('success', $response['message']);
-			} else {
+			} 
+			else 
+			{
 				return redirect()
 					->route($this->_routePrefix . '.edit', $id)
 					->with('success', $response['message']);
 			}
-		} else {
+		} 
+		else 
+		{
 			return redirect()
 				->route($this->_routePrefix . '.index')
 				->with('error', $response['message']);
