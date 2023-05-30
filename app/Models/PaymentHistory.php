@@ -16,6 +16,8 @@ class PaymentHistory extends Model
         'note',
         'amount',
         'admission_id',
+        'payment_type',
+        'center_id',
         'status'
     ];
 
@@ -64,7 +66,7 @@ class PaymentHistory extends Model
 
     public function getListing($srch_params = [], $offset = 0)
     {
-        
+       
         $listing = self::select(
                 $this->table . ".*"
             )
@@ -79,6 +81,9 @@ class PaymentHistory extends Model
             })
             ->when(isset($srch_params['admission_id']), function($q) use($srch_params){
                 return $q->where($this->table . '.admission_id', '=', $srch_params['admission_id']);
+            })
+            ->when(isset($srch_params['payment_type']), function($q) use($srch_params){
+                return $q->where($this->table . '.payment_type', '=', $srch_params['payment_type']);
             });
 
             if(isset($srch_params['id'])){
@@ -113,6 +118,7 @@ class PaymentHistory extends Model
 
     public function store($input = [], $id = 0, $request = null)
 	{
+       
 		$data 						= null;
         if ($id) {
             $data = $this->getListing(['id' => $id]);
@@ -123,6 +129,7 @@ class PaymentHistory extends Model
 
             $data->update($input);
         } else {
+            
             $data   = $this->create($input);
 		}
 		

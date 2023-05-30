@@ -24,6 +24,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 	Route::get('/home', 'App\Http\Controllers\DashboardController@index')->name('admin.home');
 	Route::get('logout', 'App\Http\Controllers\Auth\LoginController@adminLogout')->name('admin.logout');
 	Route::get('export/users', 'App\Http\Controllers\UserController@export')->name('export.users');
+	Route::get('royalty', 'App\Http\Controllers\UserController@royalty')->name('users.royalty');
 
 	Route::resources([
 		'users'       => 'App\Http\Controllers\UserController',
@@ -151,6 +152,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::post('store', 'App\Http\Controllers\RegistrationController@store')->name('registration.store');
 		Route::patch('update/{id}', 'App\Http\Controllers\RegistrationController@update')->name('registration.update');
 		Route::delete('destroy/{id}', 'App\Http\Controllers\RegistrationController@destroy')->name('registration.destroy');
+	});
+
+	Route::group(['prefix' => 'royalty'], function () {
+		Route::get('index', 'App\Http\Controllers\RolatyController@index')->name('royalty.index');
+		Route::get('create', 'App\Http\Controllers\RolatyController@create')->name('royalty.create');
+		Route::get('edit/{id}', 'App\Http\Controllers\RolatyController@edit')->name('royalty.edit');
+		Route::post('store', 'App\Http\Controllers\RolatyController@store')->name('royalty.store');
+		Route::patch('update/{id}', 'App\Http\Controllers\RolatyController@update')->name('royalty.update');
+		Route::delete('destroy/{id}', 'App\Http\Controllers\RolatyController@destroy')->name('royalty.destroy');
 	});
 
 

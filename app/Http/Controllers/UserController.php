@@ -383,4 +383,9 @@ class UserController extends Controller {
 		}
 
 	}
+
+	public function royalty(Request $request) 
+	{
+
+	}
 }
