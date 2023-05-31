@@ -1,3 +1,0 @@
-13-04-2023
-----------------
-ALTER TABLE `users` ADD `center_name` VARCHAR(250) NULL DEFAULT NULL AFTER `last_name`, ADD `center_incharge_name` VARCHAR(250) NULL DEFAULT NULL AFTER `center_name`;
