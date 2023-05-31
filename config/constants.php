@@ -1,0 +1,26 @@
+<?php
+define('YOUR_DEFINED_CONST', '10');
+define('project_stages', array(
+    'pre_lead' => 1,
+    'lead' => 2,
+    'proposal' => 3,
+    'opportunity' => 4,
+    'booked' => 5,
+    'harddisk_pending' => 6,
+    'crew_pending' => 7,
+    'ready_for_event' => 8,
+    'payment_pending' => 9,
+    'file_pending' => 10,
+    'backup_pending' => 11,
+    'upload_pending' => 12,
+    'retouch_pending' => 13,
+    'teaser_pending' => 14,
+    'highlight_pending' => 15,
+    'traditionalvideo_pending' => 16,
+    'selectlist_pending' => 17,
+    'editor_pending' => 18,
+    'album_pending' => 19,
+    'delivery_pending' => 20,
+    'delivered' => 21,
+    'deleted' => 0,
+));

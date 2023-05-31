@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^$ public/index.php [L]
+    RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+    RewriteCond %{HTTPS} !on
+    RewriteCond %{HTTP_HOST} ^admin\.magicmomentsphotography\.in [NC]
+    RewriteRule .? https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
