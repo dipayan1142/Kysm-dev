@@ -46,6 +46,27 @@
                     </div>
                 </div>
             </div>
+            
+            @if($loginUser->center_name)
+            <div class="col-lg-4">
+                <div class="card blog-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap">
+                            <div class="mr-3">
+                                <p class="text-muted mb-2">My Royalty</p>
+                                <h5 class="mb-0">{{$loginUser->center_wallet}}</h5>
+                            </div>
+
+                            <div class="avatar-sm ml-auto">
+                                <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                    <i class="bx bxs-message-square-dots"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
         <!-- end row -->
 

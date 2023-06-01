@@ -23,8 +23,8 @@ class DashboardController extends Controller {
 		->select('courses.id')
 		->whereNull('courses.deleted_at')->count();
 		$data['total_course']=$getCourseCount;
-
+	    $loginUser       = \Auth::user();
 		
-		return view('admin.index', $data,['all_data'=>$data]);
+		return view('admin.index', $data,['all_data'=>$data,'loginUser'=>$loginUser]);
 	}
 }
