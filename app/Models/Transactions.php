@@ -9,29 +9,30 @@ class Transactions extends Model
 {
     use SoftDeletes;
 
-    protected $table    = 'contact_us';
+    protected $table    = 'payment_history';
     
     protected $fillable = [
-        'contact_name',
-        'contact_email',
-        'subject',
         
+        'note',
+        'amount',
+        'admission_id',
+        'status'
     ];
 
     protected $hidden = [
     	'updated_at',
-    	
+    	'deleted_at'
     ];
 
     public $statuses = [
         0=> [
             'id' => 0,
-            'name' => 'Inactive',
+            'name' => 'Disabled',
             'badge' => 'warning'
         ],
         1=> [
             'id' => 1,
-            'name' => 'Active',
+            'name' => 'Enabled',
             'badge' => 'success'
         ],
     ];
@@ -41,63 +42,57 @@ class Transactions extends Model
     public function getFilters()
 	{
         $status         = \App\Helpers\Helper::makeSimpleArray($this->statuses, 'id,name');
-       
 		return [
-            'reset' => route('transaction.index'),
+            'reset' => route('payment_history.index'),
 			'fields' => [
-               
-				'contact_name'          => [
-		            'type'      => 'text',
-		            'label'     => 'Contact Name'
-		        ],
-		        'contact_email'         => [
-		            'type'      => 'text',
-		            'label'     => 'Contact Email'
-		        ],
-                'created_at' => [
-					'type'  => 'date',
-					'label' => 'Created At',
-				],
+				// 'name'          => [
+		        //     'type'      => 'text',
+		        //     'label'     => 'Module Name'
+		        // ],
 		       
-		        
+		        // 'status'     => [
+                //     'type'       => 'select',
+                //     'label'      => 'Status',
+                //     'attributes' => [
+                //         'id' => 'select-status',
+                //     ],
+                //     'options'    => $status,
+                // ],
 			]
 		];
 	}
 
     public function getListing($srch_params = [], $offset = 0)
     {
+        
         $listing = self::select(
-                $this->table . ".*",
-                
-            )
+                $this->table . ".*",'student_info.name','student_info.c_id'
+            )->leftJoin('student_info', 'student_info.id', '=', $this->table.'.admission_id')
             ->when(isset($srch_params['with']), function ($q) use ($srch_params) {
 				return $q->with($srch_params['with']);
 			})
-            ->when(isset($srch_params['contact_name']), function($q) use($srch_params){
-                return $q->where($this->table . ".contact_name", "LIKE", "%{$srch_params['contact_name']}%");
+            ->when(isset($srch_params['name']), function($q) use($srch_params){
+                return $q->where($this->table . ".name", "LIKE", "%{$srch_params['name']}%");
             })
-            ->when(isset($srch_params['contact_email']), function($q) use($srch_params){
-                return $q->where($this->table . ".contact_email", "LIKE", "%{$srch_params['contact_email']}%");
+            ->when(isset($srch_params['status']), function($q) use($srch_params){
+                return $q->where($this->table . '.status', '=', $srch_params['status']);
             })
-            ->when(isset($srch_params['created_at']), function ($q) use ($srch_params) {
-				return $q->whereDate($this->table . ".created_at", $srch_params['created_at']);
-			});
-            
+            ->when(isset($srch_params['admission_id']), function($q) use($srch_params){
+                return $q->where($this->table . '.admission_id', '=', $srch_params['admission_id']);
+            });
 
-        if(isset($srch_params['id'])){
-            return $listing->where($this->table . '.id', '=', $srch_params['id'])
-                            ->first();
-        }
+            if(isset($srch_params['id'])){
+                return $listing->where($this->table . '.id', '=', $srch_params['id'])
+                                ->first();
+            }
 
-       
-   
         if(isset($srch_params['orderBy'])){
             $this->orderBy = \App\Helpers\Helper::manageOrderBy($srch_params['orderBy']);
             foreach ($this->orderBy as $key => $value) {
                 $listing->orderBy($key, $value);
             }
         } else {
-            $listing->orderBy($this->table . '.created_at', 'DESC');
+            $listing->orderBy($this->table . '.id', 'ASC');
         }
 
         if (isset($srch_params['get_sql']) && $srch_params['get_sql']) {

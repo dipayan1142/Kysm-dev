@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Registration;
 use App\Models\CourseModule;
+use App\Models\Course;
+use App\Models\Admission;
 
 class RegistrationController extends Controller
 {
@@ -29,8 +31,7 @@ class RegistrationController extends Controller
         $this->initIndex();
         $this->_data['permisssionState']    = \App\Models\Permission::checkModulePermissions(['index'], 'CourseController');
         $srch_params                        = $request->all();
-        $srch_params['with']                        = ['course_pic'];
-        
+    
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;
         $this->_data['filters']             = $this->_model->getFilters();
@@ -139,6 +140,11 @@ class RegistrationController extends Controller
             ->pluck('name', 'id')
             ->all();
 
+        $course       = new Course();
+        $courseModel       = $course->getListing(['status'=>'1'])
+            ->pluck('course_name', 'id')
+            ->all();
+
         extract($this->_data);
        
         $status = \App\Helpers\Helper::makeSimpleArray($this->_model->statuses, 'id,name');
@@ -149,7 +155,7 @@ class RegistrationController extends Controller
         $form = [
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
-            
+            'include_scripts'   => '<script src="'. asset('administrator/admin-form-plugins/custom.js'). '"></script>',
             'fields'     => [
 
                 'registration_number'      => [
@@ -158,7 +164,11 @@ class RegistrationController extends Controller
                     'attributes'    => [
                     
                         'required'  => true
-                    ]
+                    ],
+                    'extra'         => [
+                        'type'          =>'custom',
+                        'value'         =>'<button type="button" name="get_search" id="get_search" class="btn btn-primary">Search</button>',
+                        ]
                 ],
                 
                 'name'      => [
@@ -166,14 +176,16 @@ class RegistrationController extends Controller
                     'label'         => 'Name',
                     'attributes'    => [
                     
-                        'required'  => true
+                        'required'  => true,
+                        'readonly'  => true,
                     ]
                 ],
                 'father_name'      => [
                     'type'          => 'text',
                     'label'         => 'Father Name',
                     'attributes'    => [
-                        'required'  => true
+                        'required'  => true,
+                        'readonly'  => true,
                     ]
                 ],
                 'module_id'      => [
@@ -183,26 +195,20 @@ class RegistrationController extends Controller
                     'value'         => isset($data->module_id) ? $data->module_id : 1,
                     'attributes'    => [
                         
-                        'required'  => true
+                        'required'  => true,
+                       
                     ]
                 ],
-                'course'      => [
+                'course_id'      => [
                     'type'          => 'select',
                     'label'         => 'Select Course',
-                    'options'       => $courseM,
-                    'value'         => isset($data->module_id) ? $data->module_id : 1,
+                    'options'       => $courseModel,
+                    'value'         => isset($data->course_id) ? $data->course_id : 1,
                     'attributes'    => [
                         
-                        'required'  => true
+                        'required'  => true,
+                
                     ]
-                ],
-               
-
-                'status'            => [
-                    'type'          => 'radio',
-                    'label'         => 'Status',
-                    'options'       => $status,
-                    'value'         => isset($data->status) ? $data->status : 1,
                 ],
             ],
         ];
@@ -220,14 +226,15 @@ class RegistrationController extends Controller
     protected function __formPost(Request $request, $id = '')
     {
         $validationRules = [
-            'course_name'          => 'required',
-            'course_title'          => 'required',
-            'duration'            => 'required|max:255'
+            'registration_number'          => 'required',
+            'module_id'          => 'required',
+            'course_id'            => 'required'
         ];
 
         $this->validate($request, $validationRules);
 
         $input      = $request->all();
+        // dd($input);
         $response   = $this->_model->store($input, $id, $request);
         
         if($response['status'] == 200){
@@ -239,5 +246,30 @@ class RegistrationController extends Controller
                     ->route($this->_routePrefix . '.index')
                     ->with('error', $response['message']);
         }
+    }
+
+    public function getData(Request $request)
+    {
+        $admissionM      = new Admission();
+        $registration_number=$request->registration_number;
+        $data = $admissionM->getListing(['registration_number' => $registration_number]);
+        
+        return $data;
+    }
+
+    public function getCourseData(Request $request)
+    {
+        $module_id=$request->c_code;
+        $course       = new Course();
+        $courseModel       = $course->getListing(['status'=>'1','module_id'=>$module_id])
+            ->pluck('course_name', 'id')
+            ->all();
+       
+        $html='<option value="">select course</option>';
+        foreach($courseModel as $key  =>  $value)
+        {
+            $html.='<option value="'.$key.'">'.$value.'</option>';
+        }
+        return $html;
     }
 }

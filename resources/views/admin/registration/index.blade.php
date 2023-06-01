@@ -15,18 +15,11 @@
   <table class="table table-condensed mh-200">
     <thead>
       <tr>
-        <th>Module </th>
+        <th>Registration Number </th>
         <th>Name </th>
-        <th>Title</th>
-        <th>Tag Line</th>
-        <th>Short Desc</th>
-        <th>Duration</th>
-        <th>Eligibility</th>
-        <th>Availibity</th>
-        <!-- <th>About</th>
-        <th>Feature</th> -->
-
-        <th>Status</th>
+        <th>Father Name</th>
+        <th>Module</th>
+        <th>Course</th>
         <th>Created At</th>
         @if($permission['edit'] || $permission['destroy'])
         <th width="15%" style="text-align: right;">Action</th>
@@ -39,29 +32,18 @@
       @foreach ($data as $key => $val)
       {{-- @dd($val); --}}
       <tr>
-        <td width="10%"><img src="http://127.0.0.1:8000/storage/assets/p/200x200/{{ @$val->course_pic['file_name'] }}" class="rounded-circle avatar-md" style="max-height: 70px;"></td>
-      <td> {{ $val->name }}</td>
-        <td>
-        
-          {{ $val->course_name }}       
-
-      </td>
-        <td> {{ $val->course_title }}</td>
-        <td> {{ $val->tag_line }}</td>
-        <td>{{ $val->short_description }}</td>
-        <td> {{ $val->duration }}</td>
-        <td> {{ $val->eligibility }}</td>
-        <td> {{ $val->availibity }}</td>
-        <!-- <td> {{ $val->about_course }}</td>
-        <td> {{ $val->key_features }}</td> -->
-        <td><span class="badge badge-pill badge-soft-{{ $val->statuses[$val->status]['badge'] }} font-size-12">{!! $val->statuses[$val->status]['name'] !!}</span></td>
+        <td> {{ $val->registration_number }}</td>
+        <td> {{ $val->name }} </td>
+        <td> {{ $val->father_name }}</td>
+        <td> {{ $val->module_name }}</td>
+        <td> {{ $val->course_name }}</td>
         <td>{{ \App\Helpers\Helper::showDate($val->created_at) }}</td>
         @if($permission['edit'] || $permission['destroy'])
         <td class="text-right">
           @if($permission['edit'])
           <a href="{{ route($routePrefix . '.edit', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="Edit">{!! \Config::get('settings.icon_edit') !!}</a>
           @endif
-          <a href="{{ route('semester.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="add Semister"><i class="fa fa-fw fa-bars"></i></a> 
+         
           
           @if($permission['destroy'] )
             <a class="btn btn-outline-danger waves-effect" data-toggle="tooltip" title="" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" data-confirm-yes="event.preventDefault();

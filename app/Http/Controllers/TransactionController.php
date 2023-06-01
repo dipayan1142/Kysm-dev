@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Transactions;
+use App\Models\Admission;
 
 class TransactionController extends Controller
 {
@@ -32,7 +33,7 @@ class TransactionController extends Controller
         $this->_data['data']                = $this->_model->getListing($srch_params, $this->_offset);
         $this->_data['orderBy']             = $this->_model->orderBy;
         $this->_data['filters']             = $this->_model->getFilters();
-        // dd($this->_data['filters']);
+        // dd($this->_data['data']);
         return view('admin.' . $this->_routePrefix . '.index', $this->_data)
             ->with('i', ($request->input('page', 1) - 1) * $this->_offset);
     }
@@ -44,6 +45,7 @@ class TransactionController extends Controller
      */
     public function create(Request $request)
     {
+   
         return $this->__formUiGeneration($request);
     }
 
@@ -122,12 +124,13 @@ class TransactionController extends Controller
      */
     protected function __formUiGeneration(Request $request, $id = '')
     {
+        
         $response = $this->initUIGeneration($id);
         if($response) {
             return $response;
         }
-        $courseModule       = new CourseModule();
-        $courseM       = $courseModule->getListing(['status'=>'1'])
+        $admission       = new Admission();
+        $admissionM       = $admission->getListing(['status'=>'1'])
             ->pluck('name', 'id')
             ->all();
 
@@ -140,103 +143,28 @@ class TransactionController extends Controller
         $form = [
             'route'      => $this->_routePrefix . ($id ? '.update' : '.store'),
             'back_route' => route($this->_routePrefix . '.index'),
-            
             'fields'     => [
-                'module_id'      => [
+                'admission_id'      => [
                     'type'          => 'select',
-                    'label'         => 'Select Module',
-                    'options'       => $courseM,
-                    'value'         => isset($data->module_id) ? $data->module_id : 1,
+                    'label'         => 'Select Admission',
+                    'options'       => $admissionM,
+                    'value'         => isset($data->admission_id) ? $data->admission_id : 1,
                     'attributes'    => [
                         
                         'required'  => true
                     ]
                 ],
-                'course_name'      => [
-                    'type'          => 'text',
-                    'label'         => 'Course Name',
-                    'attributes'    => [
-                    
-                        'required'  => true
-                    ]
-                ],
-                'course_title'      => [
-                    'type'          => 'text',
-                    'label'         => 'Course Title',
+                'amount'      => [
+                    'type'          => 'number',
+                    'label'         => 'Amount',
                     'attributes'    => [
                         'required'  => true
                     ]
                 ],
-                'tag_line'        => [
-                    'type'          => 'text',
-                    'label'         => 'Tag Line',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'short_description'        => [
-                    'type'          => 'text',
-                    'label'         => 'Short Description',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'duration'        => [
-                    'type'          => 'text',
-                    'label'         => 'Duration',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'eligibility'        => [
-                    'type'          => 'text',
-                    'label'         => 'Eligibility',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'availibity'        => [
-                    'type'          => 'text',
-                    'label'         => 'Availibity',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'about_course'        => [
+                'note'      => [
                     'type'          => 'textarea',
-                    'label'         => 'About Course',
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-                'key_features'        => [
-                    'type'          => 'textarea',
-                    'label'         => 'Features',
-                    
-                ],
-                'is_propular_course'      => [
-                    'type'          => 'select',
-                    'label'         => 'Is Propular Course',
-                    'options'       => $courseArOption,
-                    'value'         => isset($data->is_propular_course) ? $data->is_propular_course : 0,
-                    'attributes'    => [
-                        
-                        'required'  => true
-                    ]
-                ],
-
-                'status'            => [
-                    'type'          => 'radio',
-                    'label'         => 'Status',
-                    'options'       => $status,
-                    'value'         => isset($data->status) ? $data->status : 1,
-                ],
+                    'label'         => 'Note',
+                ]
             ],
         ];
 
@@ -253,9 +181,8 @@ class TransactionController extends Controller
     protected function __formPost(Request $request, $id = '')
     {
         $validationRules = [
-            'course_name'          => 'required',
-            'course_title'          => 'required',
-            'duration'            => 'required|max:255'
+            'admission_id'          => 'required',
+            'amount'          => 'required',
         ];
 
         $this->validate($request, $validationRules);

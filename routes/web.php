@@ -141,6 +141,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 
 	Route::group(['prefix' => 'transaction'], function () {
 		Route::get('index', 'App\Http\Controllers\TransactionController@index')->name('transaction.index');
+		Route::get('create', 'App\Http\Controllers\TransactionController@create')->name('transaction.create');
+		Route::post('store', 'App\Http\Controllers\TransactionController@store')->name('transaction.store');
 		Route::delete('destroy/{id}', 'App\Http\Controllers\TransactionController@destroy')->name('transaction.destroy');
 	});
 
@@ -151,6 +153,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::post('store', 'App\Http\Controllers\RegistrationController@store')->name('registration.store');
 		Route::patch('update/{id}', 'App\Http\Controllers\RegistrationController@update')->name('registration.update');
 		Route::delete('destroy/{id}', 'App\Http\Controllers\RegistrationController@destroy')->name('registration.destroy');
+		Route::get('get-data', 'App\Http\Controllers\RegistrationController@getData')->name('registration.get-data');
+		Route::get('get-course', 'App\Http\Controllers\RegistrationController@getCourseData')->name('registration.get-course-data');
 	});
 
 

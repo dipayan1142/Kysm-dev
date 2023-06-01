@@ -144,6 +144,12 @@ class Admission extends Model
                             ->first();
         }
 
+        if(isset($srch_params['registration_number']))
+        {
+            return $listing->where($this->table . '.s_id', 'like','%'.$srch_params['registration_number'].'%')
+                            ->first();
+        }
+
         if(isset($srch_params['tag_line'])){
             return $listing->where($this->table . '.tag_line', '=', $srch_params['tag_line'])
                             ->first();
