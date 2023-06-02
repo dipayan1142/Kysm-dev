@@ -236,7 +236,7 @@ class RegistrationController extends Controller
         $input      = $request->all();
         // dd($input);
         $response   = $this->_model->store($input, $id, $request);
-        
+
         if($response['status'] == 200){
             return redirect()
                 ->route($this->_routePrefix . '.index')

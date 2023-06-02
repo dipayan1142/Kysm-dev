@@ -15,11 +15,15 @@
   <table class="table table-condensed mh-200">
     <thead>
       <tr>
-        <th>Name & Date</th>
-        <th>Contact No</th>
-        <th>Other</th>
+        <th>Name</th>
+        <th>Phone No</th>
+        <th>Reg No</th>
+        <th>Course Code</th>
+        <th>Registered</th>
+        <th>Certificate</th>
+        <th>Due Amount</th>
         <th>Status</th>
-        <th>Created At</th>
+  
         @if($permission['edit'] || $permission['destroy'])
         <th width="15%" style="text-align: right;">Action</th>
         @endif
@@ -32,33 +36,21 @@
       <tr>
        
         <td> 
-          <div>
-          <span style="display: block ruby;">Name: {{ $val->name }}</span>
-          <span style="display: block ruby;">Father Name: {{ $val->f_name }}</span>
-          <span style="display: block ruby;">Date of Birth: {{ $val->dob }}</span>
-          <span style="display: block ruby;">Date of Admission: {{ $val->dob }}</span>
-          
-          </div>
+          <p><b>Name : </b> {{ $val->name }}</p>
+          <p><b>Father Name : </b> {{ $val->f_name }}</p>
+          <p><b>Date of Birth : </b> {{ $val->dob }}</p>
         </td>
-
-        <td>
-          <div>
-            <span style="display: block ruby;">Mobile: {{ $val->m_no }}</span>
-            <span style="display: block ruby;">Whatsapp: {{ $val->l_no }}</span>
-          </div>
-        </td>
-        <td>
-          <div>
-            <span style="display: block ruby;">Religion: {{ $val->religion }}</span>
-            <span style="display: block ruby;">Cast: {{ $val->cast }}</span>
-            <span style="display: block ruby;">Form Number: {{ $val->admission_form_number }}</span>
-            <span style="display: block ruby;">Total Fees: {{ $val->total_fees }}</span>
-            
-            </div>
-        </td>
+      
+        <td> {{ $val->m_no }} </td>
+        <td> {{ $val->s_id }} </td>
+        <td> {{ $val->course_name }} </td>
+        <td> {{ ($val->is_registered=='Y') ? 'Y' : 'N' }} </td>
+        <td> {{ ($val->is_certificate_generated=='Y') ? 'Y' : 'N'}} </td>
+        <td> {{ $val->total_fees }} </td>
+        
        
         <td><span class="badge badge-pill badge-soft-{{ $val->statuses[$val->status]['badge'] }} font-size-12">{!! $val->statuses[$val->status]['name'] !!}</span></td>
-        <td>{{ \App\Helpers\Helper::showDate($val->created_at) }}</td>
+       
         @if($permission['edit'] || $permission['destroy'])
         <td class="text-right">
           @if($permission['edit'])
@@ -67,21 +59,8 @@
           <a href="{{ route('admission.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="View Admission"><i class="fa fa-fw fa-eye"></i></a>
           
           <a href="{{ route('payment_history.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="payment Add"><i class="fa fa-fw fa-bars"></i></a> 
-          
-          @if($permission['destroy'] )
-            <a class="btn btn-outline-danger waves-effect" data-toggle="tooltip" title="" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" data-confirm-yes="event.preventDefault();
-                  document.getElementById('delete-form-{{$val->id}}').submit();" data-original-title="Delete">{!! \Config::get('settings.icon_delete') !!}</a>
-            {!! Form::open([
-              'method'  => 'DELETE',
-              'route'   => [
-                $routePrefix . '.destroy',
-                $val->id
-              ],
-              'style' => 'display:inline',
-              'id'    => 'delete-form-' . $val->id
-            ]) !!}
-            {!! Form::close() !!}
-          @endif
+          <a href="{{ route('payment_history.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="I-Card"><i class="fas fa-address-card "></i></a> 
+          <a href="{{ route('payment_history.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="Certificate"><i class="fas fa-certificate"></i></a> 
         </td>
         @endif
       </tr>

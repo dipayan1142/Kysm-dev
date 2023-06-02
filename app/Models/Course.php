@@ -111,6 +111,7 @@ class Course extends Model
 
     public function getListing($srch_params = [], $offset = 0)
     {
+
         $listing = self::select(
                 $this->table . ".*",
                 'course_module.name'
@@ -132,6 +133,7 @@ class Course extends Model
             });
 
         if(isset($srch_params['id'])){
+      
             return $listing->where($this->table . '.id', '=', $srch_params['id'])
                             ->first();
         }
