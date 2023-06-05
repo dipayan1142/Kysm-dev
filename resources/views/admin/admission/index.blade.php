@@ -1,7 +1,7 @@
 @php ($headerOption = [
 'title' => $module,
 'header_buttons' => [
-($permission['create'] ? '<a class="btn btn-primary waves-effect" href="'. route($routePrefix . '.create') .'" data-toggle="tooltip" data-original-title="Add New Record">'. \Config::get('settings.icon_add') .' <span>Add New</span></a>' : '')
+($permission['create'] ? '<a class="btn btn-primary waves-effect" href="'. route($routePrefix . '.create') .'" data-toggle="tooltip" data-original-title="Add New Record">'. \Config::get('settings.icon_add') .' <span>Add Student</span></a>' : '')
 ],
 'filters' => isset($filters) ? $filters : [],
 'data' => isset($data) ? $data : []
@@ -40,14 +40,12 @@
           <p><b>Father Name : </b> {{ $val->f_name }}</p>
           <p><b>Date of Birth : </b> {{ $val->dob }}</p>
         </td>
-      
         <td> {{ $val->m_no }} </td>
         <td> {{ $val->s_id }} </td>
         <td> {{ $val->course_name }} </td>
         <td> {{ ($val->is_registered=='Y') ? 'Y' : 'N' }} </td>
         <td> {{ ($val->is_certificate_generated=='Y') ? 'Y' : 'N'}} </td>
-        <td> {{ $val->total_fees }} </td>
-        
+        <td>{!! \App\Helpers\Helper::get_due_amount($val->id) !!}</td>
        
         <td><span class="badge badge-pill badge-soft-{{ $val->statuses[$val->status]['badge'] }} font-size-12">{!! $val->statuses[$val->status]['name'] !!}</span></td>
        

@@ -61,8 +61,6 @@
           <label for="name">Course Code</label>
           <select id="c_code" class="form-control"  name="c_code">
             <option value="">Select Option</option>
-            <option value="3">test</option>
-            <option value="4">module1</option>
           </select>
         </div>
       </div>
@@ -361,3 +359,4 @@
 @include('admin.components.pagination')
 
 @endsection
+<script src="{{ asset('administrator/admin-form-plugins/custom.js') }}"></script>

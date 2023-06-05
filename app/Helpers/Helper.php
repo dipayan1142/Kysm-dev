@@ -582,4 +582,34 @@ class Helper
 
 		return $getRole->role_id;
 	}
+
+	public static function get_due_amount($id)
+	{
+		$getData = DB::table('student_info')
+        ->where('student_info.id', $id)
+        ->first();
+		
+		$total_fes=@$getData->total_fees;
+		if($total_fes>0)
+		{
+			$paymentAmount = DB::table('payment_history')
+			->where('payment_history.center_id', $getData->c_id)
+			->where('payment_history.payment_type','3')
+			->sum('amount');
+
+			if($paymentAmount>0)
+			{
+				$total_due=$total_fes-$paymentAmount;
+				return $total_due;
+			}
+			else
+			{
+				return "No payment yet";
+			}
+		}
+		else
+		{
+			return "No register amount";
+		}
+	}
 }

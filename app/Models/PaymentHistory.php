@@ -90,6 +90,7 @@ class PaymentHistory extends Model
                 return $listing->where($this->table . '.id', '=', $srch_params['id'])
                                 ->first();
             }
+            
 
         if(isset($srch_params['orderBy'])){
             $this->orderBy = \App\Helpers\Helper::manageOrderBy($srch_params['orderBy']);

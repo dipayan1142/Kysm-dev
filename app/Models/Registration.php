@@ -113,7 +113,7 @@ class Registration extends Model
 
     public function store($input = [], $id = 0, $request = null)
 	{
-    //    dd($input);
+        //    dd($input);
         $module_id=$input['module_id'];
         $course_id=$input['course_id'];
 
@@ -125,49 +125,61 @@ class Registration extends Model
 
         $admissionM       = new Admission();
         $admissionMData      = $admissionM->getListing(['registration_number'=>$input['registration_number']]);
-        
-        $center_total = User::select('center_wallet')->where('id', '=', $admissionMData['center_id'])->first();
-        $data 						= null;
-        if($center_total->center_wallet>=$courseMData['reg_fee'])
+
+        $paymentM=new PaymentHistory();
+
+        $paymentMData      = $paymentM->getListing(['admission_id'=>$admissionMData->id]);
+
+
+        if(@$paymentMData->count()>0)
         {
-
-            User::where('id', '=', $admissionMData['center_id'])->update(['center_wallet' => $center_total->center_wallet-$courseMData['reg_fee']]);
-
-            $paymentM=new PaymentHistory();
-
-            $payment_input=[
-                'center_id'=>$admissionMData->c_id,
-                'admission_id'=>$admissionMData->id,
-                'amount'=>$courseMData['reg_fee'],
-                'payment_type'=>3,
-                ''
-            ];
-            $paymentM->store($payment_input);
-
-            $input['module_name']=$courseModuleData->name;
-            $input['course_name']=$courseMData->course_name;
-
-            
-            if ($id) 
-            {
-                $data = $this->getListing(['id' => $id]);
-                
-                if(!$data) {
-                    return \App\Helpers\Helper::resp('Not a valid data', 400);
-                }
-
-                $data->update($input);
-            } 
-            else 
-            {
-                $data   = $this->create($input);
-            }
-            
-            return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $data);
+            return \App\Helpers\Helper::resp('This student already register.', 201, []);
         }
         else
         {
-            return \App\Helpers\Helper::resp('Pleac check your balance.', 201, $data);
+            $center_total = User::select('center_wallet')->where('id', '=', $admissionMData['center_id'])->first();
+            $data 						= null;
+            if($center_total->center_wallet>=$courseMData['reg_fee'])
+            {
+
+                User::where('id', '=', $admissionMData['center_id'])->update(['center_wallet' => $center_total->center_wallet-$courseMData['reg_fee']]);
+
+            
+
+                $payment_input=[
+                    'center_id'=>$admissionMData->c_id,
+                    'admission_id'=>$admissionMData->id,
+                    'amount'=>$courseMData['reg_fee'],
+                    'payment_type'=>3,
+                    ''
+                ];
+                $paymentM->store($payment_input);
+
+                $input['module_name']=$courseModuleData->name;
+                $input['course_name']=$courseMData->course_name;
+
+                
+                if ($id) 
+                {
+                    $data = $this->getListing(['id' => $id]);
+                    
+                    if(!$data) {
+                        return \App\Helpers\Helper::resp('Not a valid data', 400);
+                    }
+
+                    $data->update($input);
+                } 
+                else 
+                {
+                    $data   = $this->create($input);
+                }
+                
+                return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $data);
+            }
+            else
+            {
+                return \App\Helpers\Helper::resp('Pleac check your balance.', 201, $data);
+            }
         }
     }
     

@@ -16,7 +16,7 @@ class AdmissionController extends Controller
     {
         parent::__construct($parameters);
         
-        $this->_module      = 'Admission';
+        $this->_module      = 'Student';
         $this->_routePrefix = 'admission';
         $this->_model       = new Admission();
     }
@@ -48,6 +48,7 @@ class AdmissionController extends Controller
     {
         $courseModule       = new CourseModule();
         $courseModuleData      = $courseModule->getListing(['status'=>'1']);
+
         return view('admin.admission.add',compact('courseModuleData'));
         // return $this->__formUiGeneration($request);
     }

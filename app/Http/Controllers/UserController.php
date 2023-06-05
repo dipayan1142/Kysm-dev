@@ -16,7 +16,7 @@ class UserController extends Controller
 	public function __construct($parameters = array()) {
 		parent::__construct($parameters);
 
-		$this->_module      = 'Center';
+		$this->_module      = 'Campus';
 		$this->_routePrefix = 'users';
 		$this->_model       = new User();
 	}

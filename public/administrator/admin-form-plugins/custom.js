@@ -55,5 +55,25 @@ $(document).ready(function(){
 		});
 	}
 
+	$('#course_name').on('change',function()
+	{
+		var url=PATH+'/registration/get-course';
+		var course_name = $('#course_name').val();
+		$.ajax({ 
+			url: url,
+			data: {"c_code": course_name},
+			type: 'GET',
+			success: function(result)
+			{
+				$('#c_code')
+				.find('option')
+				.remove()
+				.end()
+				.append(result)
+				.val('');
+			}
+		});
+	});
+
 	
 });

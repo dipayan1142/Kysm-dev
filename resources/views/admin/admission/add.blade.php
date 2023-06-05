@@ -56,12 +56,11 @@
         </div>
 
       <div class="col-6">
-        <div class="form-group">
+        <div class="form-group"> 
           <label for="name">Course Code</label>
           <select required="" id="c_code" class="form-control"  name="c_code">
             <option value="">Select Option</option>
-            <option value="3">test</option>
-            <option value="4">module1</option>
+           
           </select>
         </div>
       </div>
@@ -363,27 +362,4 @@
 
 @endsection
 <script src="{{ asset('/administrator/assets/libs/jquery/jquery.min.js')}}"></script>
-<script>
-  $('#course_name').on('change',function(){
-    alert("hiii");
-    var search=$('#search').val();
-         
-      // jQuery.ajax({
-      //     url: '/admin/all-caller-list-ajax',
-      //     data: {'search': search},
-      //     type: "GET",
-      //     success: function(data){
-              
-      //         if(data)
-      //         {
-      //             $("#loading").hide();
-              
-      //                 $('#request').html(data);
-                  
-      //         }
-              
-                  
-      //         }
-      // });
-  });
-  </script>  
+<script src="{{ asset('administrator/admin-form-plugins/custom.js') }}"></script>
