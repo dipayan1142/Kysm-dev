@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
 
+
 class Admission extends Model
 {
     use SoftDeletes;
@@ -191,7 +192,8 @@ class Admission extends Model
         
       
 		$data 						= null;
-        if ($id) {
+        if ($id) 
+        {
             $data = $this->getListing(['id' => $id]);
 
             if(!$data) {
@@ -199,9 +201,12 @@ class Admission extends Model
 			}
 
             $data->update($input);
-        } else {
+        } 
+        else 
+        {
             $data   = $this->create($input);
-		}
+        }
+            
 		
 		return \App\Helpers\Helper::resp('Changes has been successfully saved.', 200, $data);
     }

@@ -36,9 +36,9 @@ class HomeController extends Controller
 
     public function contact(Request $request)
     {
-
         return view('contact');
     }
+
     public function about_us(Request $request)
     {
         $data=[];
@@ -55,9 +55,8 @@ class HomeController extends Controller
         return view('about',['all_data'=>$data]);
     }
 
-    public function save_contact(Request $Request){
-		
-       
+    public function save_contact(Request $Request)
+    {
 		$insert = [
             'contact_name' => $Request->contact_name,
             'contact_email' => $Request->contact_email,
@@ -74,4 +73,9 @@ class HomeController extends Controller
             return redirect('/contact');
         }
 	}
+
+    public function course(Request $request)
+    {
+        return view('course');
+    }
 }

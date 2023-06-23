@@ -25,7 +25,7 @@
             <ul class="navbar-nav">
               <li><a class="nav-link active" href="{{url('')}}">Home</a></li>
               <li><a class="nav-link" href="{{url('about-us')}}">About</a></li>
-              <li><a class="nav-link" href="courses.html">Courses</a></li>
+              <li><a class="nav-link" href="{{url('course')}}">Courses</a></li>
               <li><a class="nav-link" href="reaserch.html">Franchise</a></li>
               <li><a class="nav-link" href="news.html">News</a></li>
               <li><a class="nav-link" href="{{url('contact')}}">Contact us</a></li>

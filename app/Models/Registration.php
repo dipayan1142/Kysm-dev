@@ -151,7 +151,6 @@ class Registration extends Model
                     'admission_id'=>$admissionMData->id,
                     'amount'=>$courseMData['reg_fee'],
                     'payment_type'=>3,
-                    ''
                 ];
                 $paymentM->store($payment_input);
 
