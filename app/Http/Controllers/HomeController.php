@@ -74,8 +74,68 @@ class HomeController extends Controller
         }
 	}
 
-    public function course(Request $request)
+    public function course($id=null)
     {
-        return view('course');
+        $data=[];
+        $module = DB::table('course_module')
+            ->select('course_module.*')
+            ->where('course_module.status', '1')
+            ->where('course_module.status', '1')
+            ->whereNull('course_module.deleted_at')
+            ->orderBy('course_module.created_at', 'DESC')
+            ->get();
+       
+		
+
+        if($id){
+        
+            $getCourse = DB::table('courses')
+            ->select('courses.*')
+            ->where('courses.module_id', $id)
+            ->where('courses.status', '1')
+            ->whereNull('courses.deleted_at')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+            $selectModule = DB::table('course_module')
+            ->select('course_module.*')
+            ->where('course_module.id', $id)
+            ->first();
+            $data['select_modules']=$selectModule;
+        }else{
+
+            $getCourse = DB::table('courses')
+            ->select('courses.*')
+            ->where('courses.status', '1')
+            ->whereNull('courses.deleted_at')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+            $data['select_modules']='';
+        }
+        $data['courses']=$getCourse;
+        $data['modules']=$module;
+
+        return view('course',['all_data'=>$data]);
     }
+
+    public function course_details(Request $request)
+    {
+        $data=[];
+
+     
+
+        $getPropularCourse = DB::table('courses')
+		->select('courses.*')
+        ->where('is_propular_course', '1')
+        ->where('courses.status', '1')
+        ->whereNull('courses.deleted_at')
+        ->orderBy('created_at', 'DESC')
+		->get();
+		$data['propular_course']=$getPropularCourse;
+		
+
+     
+        return view('course_details',['all_data'=>$data]);
+    }
+
 }

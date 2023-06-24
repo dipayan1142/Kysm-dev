@@ -181,5 +181,7 @@ Route::get('/contact', 'App\Http\Controllers\HomeController@contact')->name('con
 Route::get('/about-us', 'App\Http\Controllers\HomeController@about_us')->name('about-us');
 Route::post('/save-contact', 'App\Http\Controllers\HomeController@save_contact')->name('save-contact');
 Route::get('/course', 'App\Http\Controllers\HomeController@course')->name('course');
+Route::get('/course/{id}', 'App\Http\Controllers\HomeController@course')->name('course');
+Route::get('/course-details/{id}', 'App\Http\Controllers\HomeController@course_details')->name('course-details');
 
 
