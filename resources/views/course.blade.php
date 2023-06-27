@@ -94,7 +94,7 @@
                   <div class="col-6 py-1">{{$val->enroll}}</div>
                 </div>
               </div>
-              <a href="{{url('course-details/'.$val->id)}}" class="btn btn-info btn-sm px-4 mx-auto mb-4"
+              <a href="{{url('course-details/'.$module_id.'/'.$val->id)}}" class="btn btn-info btn-sm px-4 mx-auto mb-4"
                 >Get Details</a
               >
             </div>

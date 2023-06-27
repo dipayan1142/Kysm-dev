@@ -115,23 +115,20 @@ class HomeController extends Controller
         $data['courses']=$getCourse;
         $data['modules']=$module;
 
-        return view('course',['all_data'=>$data]);
+        return view('course',['all_data'=>$data,'module_id'=>$id]);
     }
 
-    public function course_details(Request $request)
+    public function course_details($module_id,$id)
     {
         $data=[];
 
      
 
-        $getPropularCourse = DB::table('courses')
+        $courseDetails = DB::table('courses')
 		->select('courses.*')
-        ->where('is_propular_course', '1')
-        ->where('courses.status', '1')
-        ->whereNull('courses.deleted_at')
-        ->orderBy('created_at', 'DESC')
-		->get();
-		$data['propular_course']=$getPropularCourse;
+        ->where('courses.id', $id)
+		->first();
+		$data['courseDetails']=$courseDetails;
 		
 
      
