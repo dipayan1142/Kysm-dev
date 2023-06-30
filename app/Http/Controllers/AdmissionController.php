@@ -519,4 +519,18 @@ class AdmissionController extends Controller
                     ->with('error', $response['message']);
         }
     }
+
+    public function generate_certificate(Request $request, $id)
+    {
+        $srch_params['id']=$id;
+        $admission                = $this->_model->getListing($srch_params, $this->_offset);
+
+       // echo "<pre/>"; print_r($admission); die;
+        $courseModule       = new CourseModule();
+        $courseModuleData      = $courseModule->getListing(['status'=>'1']);
+        return view('admin.admission.generate_certificate',compact('courseModuleData','admission'));
+        
+    }
+
+
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Crypt;
 use DB;
 use App\Models\ContactUs;
 use Session;
+use PDF;
 class HomeController extends Controller
 {
     public function home(Request $request)
@@ -154,6 +155,16 @@ class HomeController extends Controller
             ->get();
 
         return view('course_details',['all_data'=>$data]);
+    }
+
+    public function test_pdf()
+    {
+        $data = [
+            'foo' => 'bar'
+        ];
+
+        $pdf = PDF::loadView('admin/testpdf', $data);
+        return $pdf->stream('testpdf.pdf');
     }
 
 }

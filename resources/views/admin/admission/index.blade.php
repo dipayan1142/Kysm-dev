@@ -58,7 +58,7 @@
           
           <a href="{{ route('payment_history.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="payment Add"><i class="fa fa-fw fa-bars"></i></a> 
           <a href="{{ route('payment_history.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="I-Card"><i class="fas fa-address-card "></i></a> 
-          <a href="{{ route('payment_history.show', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="Certificate"><i class="fas fa-certificate"></i></a> 
+          <a href="{{ route($routePrefix . '.generate-certificate', $val->id) }}" class="btn btn-outline-light waves-effect" data-toggle="tooltip" title="" data-original-title="Certificate"><i class="fas fa-certificate"></i></a> 
         </td>
         @endif
       </tr>

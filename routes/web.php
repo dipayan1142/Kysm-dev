@@ -110,6 +110,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::post('update', 'App\Http\Controllers\AdmissionController@update')->name('admission.update');
 		Route::delete('destroy/{id}', 'App\Http\Controllers\AdmissionController@destroy')->name('admission.destroy');
 		Route::get('show/{id}', 'App\Http\Controllers\AdmissionController@show')->name('admission.show');
+		Route::get('generate-certificate/{id}', 'App\Http\Controllers\AdmissionController@generate_certificate')->name('admission.generate-certificate');
+
 	});
 
 	Route::group(['prefix' => 'change_password'], function () {
@@ -183,5 +185,6 @@ Route::post('/save-contact', 'App\Http\Controllers\HomeController@save_contact')
 Route::get('/course', 'App\Http\Controllers\HomeController@course')->name('course');
 Route::get('/course/{id}', 'App\Http\Controllers\HomeController@course')->name('course');
 Route::get('/course-details/{module_id}/{id}', 'App\Http\Controllers\HomeController@course_details')->name('course-details');
+Route::get('/test-pdf', 'App\Http\Controllers\HomeController@test_pdf')->name('test-pdf');
 
 
