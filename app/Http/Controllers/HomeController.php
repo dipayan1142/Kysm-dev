@@ -104,13 +104,26 @@ class HomeController extends Controller
             $data['select_modules']=$selectModule;
         }else{
 
+            $lastModule = DB::table('course_module')
+            ->select('course_module.*')
+            ->where('course_module.status', '1')
+            ->where('course_module.status', '1')
+            ->whereNull('course_module.deleted_at')
+            ->orderBy('course_module.created_at', 'DESC')
+            ->first();
+            $id=@$lastModule->id;
             $getCourse = DB::table('courses')
             ->select('courses.*')
+            ->where('courses.module_id', @$id)
             ->where('courses.status', '1')
             ->whereNull('courses.deleted_at')
             ->orderBy('created_at', 'DESC')
             ->get();
-            $data['select_modules']='';
+            $selectModule = DB::table('course_module')
+            ->select('course_module.*')
+            ->where('course_module.id', $id)
+            ->first();
+            $data['select_modules']=$selectModule;
         }
         $data['courses']=$getCourse;
         $data['modules']=$module;
@@ -122,16 +135,24 @@ class HomeController extends Controller
     {
         $data=[];
 
-     
-
-        $courseDetails = DB::table('courses')
+        $data['courseDetails'] = DB::table('courses')
 		->select('courses.*')
         ->where('courses.id', $id)
 		->first();
-		$data['courseDetails']=$courseDetails;
-		
 
-     
+        $data['semister'] = DB::table('semester')
+		->select('semester.*')
+        ->where('course_id', @$data['courseDetails']->id)
+		->get();
+
+        $data['module'] = DB::table('course_module')
+            ->select('course_module.*')
+            ->where('course_module.status', '1')
+            ->where('course_module.status', '1')
+            ->whereNull('course_module.deleted_at')
+            ->orderBy('course_module.created_at', 'DESC')
+            ->get();
+
         return view('course_details',['all_data'=>$data]);
     }
 

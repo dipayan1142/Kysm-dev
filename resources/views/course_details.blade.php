@@ -45,27 +45,16 @@
             </p>
 
             <p>
-              Invidunt lorem justo sanctus clita. Erat lorem labore ea, justo
-              dolor lorem ipsum ut sed eos, ipsum et dolor kasd sit ea justo.
-              Erat justo sed sed diam. Ea et erat ut sed diam sea ipsum est
-              dolor
+              {{$all_data['courseDetails']->about_course}}
             </p>
             <div class="row pt-1 pb-1">
               <div class="col-12 col-md-12">
                 <h3 class="mb-1">Key Features</h3>
                 <ul class="list-inline m-0">
                   <li class="py-2 border-top border-bottom">
-                    <i class="fa fa-check text-primary mr-3"></i>Labore eos amet
-                    dolor amet diam
+                    <i class="fa fa-check text-primary mr-3"></i>{{$all_data['courseDetails']->key_features}}
                   </li>
-                  <li class="py-2 border-bottom">
-                    <i class="fa fa-check text-primary mr-3"></i>Etsea et sit
-                    dolor amet ipsum
-                  </li>
-                  <li class="py-2 border-bottom">
-                    <i class="fa fa-check text-primary mr-3"></i>Diam dolor diam
-                    elitripsum vero.
-                  </li>
+                 
                 </ul>
               </div>
             </div>
@@ -80,87 +69,37 @@
       <div class="row">
         <div class="col-12">
           <div class="accordion" id="accordionExample">
+
+          @if(count($all_data['semister'])!=0)
+          @foreach ($all_data['semister'] as $key => $val)
+
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button
                   class="accordion-button"
                   type="button"
                   data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne"
+                  data-bs-target="#collapse{{$val->id}}"
                   aria-expanded="true"
-                  aria-controls="collapseOne"
+                  aria-controls="collapse{{$val->id}}"
                 >
-                  Semister #1
+                  {{$val->name}}
                 </button>
               </h2>
               <div
-                id="collapseOne"
-                class="accordion-collapse collapse show"
-                data-bs-parent="#accordionExample"
-              >
-                <div class="accordion-body">
-                  <strong>This is the first item's accordion body.</strong> It
-                  is shown by default, until the collapse plugin adds the
-                  appropriate classes that we use to style each element.
-                  <code>.accordion-body</code>, though the transition does limit
-                  overflow.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
-                >
-                  Semister #2
-                </button>
-              </h2>
-              <div
-                id="collapseTwo"
+                id="collapse{{$val->id}}"
                 class="accordion-collapse collapse"
                 data-bs-parent="#accordionExample"
               >
                 <div class="accordion-body">
-                  <strong>This is the second item's accordion body.</strong> It
-                  is hidden by default, until the collapse plugin adds the
-                  appropriate classes that we use to style each element.
-                  <code>.accordion-body</code>, though the transition does limit
-                  overflow.
+                  {{$val->description}}
                 </div>
               </div>
             </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseThree"
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
-                >
-                  Semister #3
-                </button>
-              </h2>
-              <div
-                id="collapseThree"
-                class="accordion-collapse collapse"
-                data-bs-parent="#accordionExample"
-              >
-                <div class="accordion-body">
-                  <strong>This is the third item's accordion body.</strong> It
-                  is hidden by default, until the collapse plugin adds the
-                  appropriate classes that we use to style each element.
-                  <code>.accordion-body</code>, though the transition does limit
-                  overflow.
-                </div>
-              </div>
-            </div>
+
+          @endforeach
+          @endif
+         
           </div>
         </div>
       </div>
@@ -177,7 +116,12 @@
           <h1 class="mb-4">Explore our course catalog</h1>
         </div>
         <div class="row">
+
+        @if(count($all_data['module'])!=0)
+        @foreach ($all_data['module'] as $key => $valm)
+
           <div class="col-lg-3 col-md-4 pb-1">
+            <a href="{{url('course/'.$valm->id)}}">
             <div
               class="d-flex bg-light shadow-sm border-top rounded mb-4"
               style="padding: 10px"
@@ -186,103 +130,15 @@
                 class="flaticon-050-fence flaticon-h1 font-weight-normal text-primary mb-3"
               ></i>
               <div class="flaticon-pl-4">
-                <h4>Module 1</h4>
+                <h4>{{$valm->name}}</h4>
               </div>
             </div>
+            </a>
           </div>
-          <div class="col-lg-3 col-md-4 pb-1">
-            <div
-              class="d-flex bg-light shadow-sm border-top rounded mb-4"
-              style="padding: 10px"
-            >
-              <i
-                class="flaticon-022-drum flaticon-h1 font-weight-normal text-primary mb-3"
-              ></i>
-              <div class="flaticon-pl-4">
-                <h4>Module 2</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 pb-1">
-            <div
-              class="d-flex bg-light shadow-sm border-top rounded mb-4"
-              style="padding: 10px"
-            >
-              <i
-                class="flaticon-030-crayons flaticon-h1 font-weight-normal text-primary mb-3"
-              ></i>
-              <div class="flaticon-pl-4">
-                <h4>Module 3</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 pb-1">
-            <div
-              class="d-flex bg-light shadow-sm border-top rounded mb-4"
-              style="padding: 10px"
-            >
-              <i
-                class="flaticon-017-toy-car flaticon-h1 font-weight-normal text-primary mb-3"
-              ></i>
-              <div class="flaticon-pl-4">
-                <h4>Module 4</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 pb-1">
-            <div
-              class="d-flex bg-light shadow-sm border-top rounded mb-4"
-              style="padding: 10px"
-            >
-              <i
-                class="flaticon-025-sandwich flaticon-h1 font-weight-normal text-primary mb-3"
-              ></i>
-              <div class="flaticon-pl-4">
-                <h4>Module 5</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 pb-1">
-            <div
-              class="d-flex bg-light shadow-sm border-top rounded mb-4"
-              style="padding: 10px"
-            >
-              <i
-                class="flaticon-047-backpack flaticon-h1 font-weight-normal text-primary mb-3"
-              ></i>
-              <div class="flaticon-pl-4">
-                <h4>Module 6</h4>
-              </div>
-            </div>
-          </div>
+     
+      @endforeach
+      @endif
 
-          <div class="col-lg-3 col-md-4 pb-1">
-            <div
-              class="d-flex bg-light shadow-sm border-top rounded mb-4"
-              style="padding: 10px"
-            >
-              <i
-                class="flaticon-047-backpack flaticon-h1 font-weight-normal text-primary mb-3"
-              ></i>
-              <div class="flaticon-pl-4">
-                <h4>Module 7</h4>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-4 pb-1">
-            <div
-              class="d-flex bg-light shadow-sm border-top rounded mb-4"
-              style="padding: 10px"
-            >
-              <i
-                class="flaticon-047-backpack flaticon-h1 font-weight-normal text-primary mb-3"
-              ></i>
-              <div class="flaticon-pl-4">
-                <h4>Module 8</h4>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
