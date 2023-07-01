@@ -11,6 +11,7 @@ use App\Models\AdmissionDetails;
 use App\Models\User;
 use DB;
 use App\Models\PaymentHistory;
+use PDF;
 class AdmissionController extends Controller
 {
     public function __construct($parameters = array())
@@ -530,6 +531,20 @@ class AdmissionController extends Controller
         $courseModuleData      = $courseModule->getListing(['status'=>'1']);
         return view('admin.admission.generate_certificate',compact('courseModuleData','admission'));
         
+    }
+    public function download_certificate(Request $request)
+    {
+        $data=[];
+        $srch_params['id']=$request->student_info_id;
+        $admission = $this->_model->getListing($srch_params, $this->_offset);
+        $data['admission']=$admission;
+        $pdf = PDF::loadView('admin/admission/certificatepdf', $data, [], 
+        [ 
+          'title' => 'Certificate', 
+          'format' => [1000, 380],
+          'orientation' => 'L'
+        ]);
+        return $pdf->stream('certificatepdf.pdf');
     }
 
 

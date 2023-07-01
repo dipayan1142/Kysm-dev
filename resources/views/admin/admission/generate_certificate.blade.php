@@ -12,7 +12,7 @@
 @section('content')
 
  <div class="container">
-  <form method="POST" action="{{ route('admission.update') }}" accept-charset="UTF-8" enctype="multipart/form-data">
+  <form method="POST" action="{{ route('admission.download-certificate') }}" accept-charset="UTF-8" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-6">
@@ -71,7 +71,7 @@
         <div class="form-group">
           <label for="name">Marks</label>
           <input type="text"
-            class="form-control" name="po" id="po" value="">
+            class="form-control" name="marks" id="marks" value="">
         </div>
       </div>
 
@@ -79,9 +79,10 @@
         <div class="form-group">
           <label for="name">Grade</label>
           <input type="text"
-            class="form-control" name="ps" id="ps" value="">
+            class="form-control" name="grade" id="grade" value="">
         </div>
       </div>
+    </div>
 
      
   

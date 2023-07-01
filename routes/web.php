@@ -111,6 +111,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'permission'], function () {
 		Route::delete('destroy/{id}', 'App\Http\Controllers\AdmissionController@destroy')->name('admission.destroy');
 		Route::get('show/{id}', 'App\Http\Controllers\AdmissionController@show')->name('admission.show');
 		Route::get('generate-certificate/{id}', 'App\Http\Controllers\AdmissionController@generate_certificate')->name('admission.generate-certificate');
+		Route::post('download-certificate', 'App\Http\Controllers\AdmissionController@download_certificate')->name('admission.download-certificate');
 
 	});
 
