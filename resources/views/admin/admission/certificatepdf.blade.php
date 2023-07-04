@@ -114,13 +114,14 @@
     </style>
   </head>
   <body>
+   
     <div class="certificate">
       <p class="slno_text">Sl. No _________</p>
       <div class="certificate-content">
         
         <p class="certificate-text">
           This is to certify that Mr./Ms./Mrs.
-          _____________________________________________________________ Son/Daughter/Wife
+          ____________surjya________________________________________________ Son/Daughter/Wife
           of  </p>
           <p class="certificate-text">Mr. ___________________________________________ DOB ____________ bearing Registration No _______________________________ </p>
           <p class="certificate-text"> 

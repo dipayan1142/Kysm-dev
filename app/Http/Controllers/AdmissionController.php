@@ -534,11 +534,15 @@ class AdmissionController extends Controller
     }
     public function download_certificate(Request $request)
     {
+        //echo "<pre/>"; print_r($request->all()); die;
         $data=[];
         $srch_params['id']=$request->student_info_id;
         $admission = $this->_model->getListing($srch_params, $this->_offset);
         $data['admission']=$admission;
-        $pdf = PDF::loadView('admin/admission/certificatepdf', $data, [], 
+        $data['form_request']=$request->all();
+
+        
+        $pdf = PDF::loadView('admin/admission/certificatepdf', ['data'=>$data], [], 
         [ 
           'title' => 'Certificate', 
           'format' => [1000, 380],
