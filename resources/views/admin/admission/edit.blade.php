@@ -359,4 +359,5 @@
 @include('admin.components.pagination')
 
 @endsection
+<script src="{{ asset('/administrator/assets/libs/jquery/jquery.min.js')}}"></script>
 <script src="{{ asset('administrator/admin-form-plugins/custom.js') }}"></script>
