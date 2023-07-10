@@ -7,16 +7,13 @@
     <style>
       /* Define the certificate container */
       .certificate {
-        /* width: 1000px; */
         width: 100%;
         height: 800px;
-        /* height: auto; */
         background-image: url("./img/certificate.png");
         /* background-size: cover; */
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        position: relative;
         border: 1px solid #000;
         box-sizing: border-box;
       }
@@ -25,7 +22,6 @@
       .certificate-content {
         padding: 40px;
         text-align: left;
-        /* background-color: rgba(255, 255, 255, 0.7); */
         margin: 60px 5px 0px 175px;
         border-radius: 5px;
       }
@@ -45,34 +41,29 @@
 
       /* Style the certificate text */
       .certificate-text {
-        font-size: 15px;
+        font-size: 15px !important;
         /* margin-bottom: -15px !important; */
-        margin: 3px;
+        margin: 1px;
         padding: 2px;
         font-weight: bold;
         font-family: sans-serif;
         color: blue;
-        letter-spacing: 0.5px;
+        display: inline;
+        border: none !important;
       }
       .certificate-text-date
       {
         font-size: 15px;
         /* margin-bottom: -15px !important; */
-        margin: 3px;
+        margin: 1px;
         padding: 2px;
         font-weight: bold;
         font-family: sans-serif;
         color: blue;
         text-align: right;
-        margin-right: 180px;
-      
-       
+
       }
-      /* .grade-table
-      {
-        display: flex !important;
-        justify-content: space-between;
-      } */
+      
      table 
      {
         border-collapse: collapse;
@@ -109,8 +100,17 @@
       margin-left: 10px;
       
     }
-   
-   
+ 
+    .text-under {
+        border: none !important;
+        text-align: center !important;
+        border-bottom: 1px dotted black;
+        border-bottom-width: thin;
+        font-size: 15px;
+        color: black;
+    }
+ 
+    
     </style>
   </head>
   <body>
@@ -118,11 +118,77 @@
     <div class="certificate">
       <p class="slno_text">Sl. No _________</p>
       <div class="certificate-content">
+        <table  border='0' cellpadding='1' cellspacing='1' style="width:85%; ">
+          <tbody>
+            <tr>
+              <td width='29%' class="certificate-text"> This is to certify that Mr./Ms./Mrs.</td>
+              <td width='50%' class="text-under"> <strong>Dipayan Samanta</strong> </td>
+              <td width='31%' class="certificate-text" > Son/Daughter/Wife of</td>
+            </tr>
+          </tbody>
+        </table>
+        <table border='0' cellpadding='1' cellspacing='1' style="width:85%; margin-top:3px">
+          <tbody>
+            <tr>
+              <td width='3%' class="certificate-text"> Mr.</td>
+              <td width='50%' class="text-under"><strong>Swapan kanrar</strong> </td>
+              <td width='5%' class="certificate-text">DOB</td>
+              <td width='20%' class="text-under"> <strong> 12/12/2023</strong></td>
+              <td width='40%' class="certificate-text"> bearing Registration No</td>
+            </tr>
+
+          </tbody>
+        </table>
+        <table border='0' cellpadding='1' cellspacing='1' style="width:85%;margin-top:3px; ">
+          <tbody>
+            <tr>
+              <td width='10%' class="certificate-text"> the cource.</td>
+              <td width='33%' class="text-under"> <strong>Swapan kanrar</strong> </td>
+              <td width='12%' class="certificate-text">during from</td>
+              <td width='16%' class="text-under"> <strong>12/12/2023</strong> </td>
+              <td width='3%' class="certificate-text"> to</td>
+              <td width='16%' class="text-under"> <strong>12/12/2023</strong> </td>
+              <td width='20%' class="certificate-text"> duration</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <table border='0' cellpadding='1' cellspacing='1' style="width:83%;margin-top:3px;">
+          <tbody>
+            <tr>
+              <td width='10%' class="text-under"> <strong> 3 </strong>  </td>
+              <td width='50%' class="certificate-text" style="text-align:center; margin-top:10px">&nbsp; months with practical training in coumputers and passed the final examination with</td>
+              <td width='13%' class="text-under"> <strong> 12/12/2023</strong> </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <table border='0' cellpadding='1' cellspacing='1' style="width:35%;margin-top:3px;">
+          <tbody>
+            <tr>
+              <td width='25%' class="certificate-text" > marks and achieved grade</td>
+              <td width='13%' class="text-under"> <strong> 12/12/2023 </strong>  </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <table border='0' style="width:82%; float:left">
+          <tbody>
+            <tr>
+              <td width="70%" class="certificate-text"></td>
+              <td width='10%' class="certificate-text" style="text-align:center;" >Date of Issue</td>
+              <td width='10%' class="text-under"> <strong> 12/12/2023</strong> </td>
+            </tr>
+
+          </tbody>
+        </table>
+
         
-        <p class="certificate-text">
-          This is to certify that Mr./Ms./Mrs.
-          ____________surjya________________________________________________ Son/Daughter/Wife
-          of  </p>
+        {{-- <p class="certificate-text"> This is to certify that Mr./Ms./Mrs. <span style="border-bottom: 3px dotted black; display: inline-block; width: 300px;"><strong>Mondal</strong></span> Son/Daughter/Wife of</p>
+        
           <p class="certificate-text">Mr. ___________________________________________ DOB ____________ bearing Registration No _______________________________ </p>
           <p class="certificate-text"> 
           conducted by our affiliated centre ______________________________________________________ has successfully completed</p>
@@ -132,7 +198,7 @@
           
           <p class="certificate-text"> marks and achieved grade _________ .</p>
           
-          <p class="certificate-text-date">Date of Issue ______________.</p>
+          <p class="certificate-text-date">Date of Issue ______________.</p> --}}
 
           
       <div class="col12">

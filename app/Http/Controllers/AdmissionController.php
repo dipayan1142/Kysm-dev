@@ -532,6 +532,7 @@ class AdmissionController extends Controller
         return view('admin.admission.generate_certificate',compact('courseModuleData','admission'));
         
     }
+    
     public function download_certificate(Request $request)
     {
         //echo "<pre/>"; print_r($request->all()); die;
